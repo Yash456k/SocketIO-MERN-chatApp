@@ -1,0 +1,78 @@
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-in-down {
+  0% {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.fade-in-down {
+  animation: fade-in-down 0.5s ease-out;
+}
+
+.fade-in {
+  animation: fade-in 0.5s ease-out;
+}
+
+/* index.css */
+
+/* CSS Reset */
+
+/* Ensure the root element takes full height */
+
+body {
+  overflow: hidden;
+}
+
+body {
+  scroll-behavior: smooth;
+}
+/* custom.css */
+
+/* width */
+.hide-scrollbar::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+.hide-scrollbar::-webkit-scrollbar-track {
+  border-radius: 10px;
+}
+
+/* Handle */
+.hide-scrollbar::-webkit-scrollbar-thumb {
+  background: rgb(255, 255, 255);
+  border-radius: 10px;
+}
+
+/* Handle on hover */
+.hide-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #202020;
+}
+
+.fade-in {
+  animation: fadeIn 0.3s ease-in-out;
+}
