@@ -3,7 +3,6 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import FirebaseLogin from "./components/FirebaseLogin";
 import Chat from "./components/Chat";
 import Home from "./components/Home";
-import Login from "./components/Login";
 import "./App.css";
 import TestTrial from "./components/TestTrial";
 
