@@ -10,15 +10,11 @@
   ],
   "routes": [
     {
-      "src": "/assets/(.*)",
-      "dest": "/client/dist/assets/$1"
-    },
-    {
       "src": "/(.*)",
-      "dest": "/client/dist/index.html"
+      "dest": "/index.html"
     }
   ],
-  "buildCommand": "cd client && npm run build",
-  "installCommand": "cd client && npm install",
-  "devCommand": "cd client && npm run dev"
+  "buildCommand": "npm run build --prefix client",
+  "installCommand": "npm install --prefix client",
+  "devCommand": "vite --cwd client"
 }
