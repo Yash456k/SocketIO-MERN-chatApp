@@ -1,20 +1,3 @@
 {
-  "builds": [
-    {
-      "src": "client/package.json",
-      "use": "@vercel/static-build",
-      "config": {
-        "distDir": "client/dist"
-      }
-    }
-  ],
-  "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "/index.html"
-    }
-  ],
-  "buildCommand": "npm run build --prefix client",
-  "installCommand": "npm install --prefix client",
-  "devCommand": "vite --cwd client"
+  "rewrites": [{ "source": "/(.*)", "destination": "/" }]
 }
