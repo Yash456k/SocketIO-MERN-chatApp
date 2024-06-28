@@ -1,20 +1,24 @@
 {
   "builds": [
     {
-      "src": "package.json",
+      "src": "client/package.json",
       "use": "@vercel/static-build",
       "config": {
-        "distDir": "dist"
+        "distDir": "client/dist"
       }
     }
   ],
   "routes": [
     {
+      "src": "/assets/(.*)",
+      "dest": "/client/dist/assets/$1"
+    },
+    {
       "src": "/(.*)",
-      "dest": "/index.html"
+      "dest": "/client/dist/index.html"
     }
   ],
-  "buildCommand": "npm run build",
-  "installCommand": "npm install",
-  "devCommand": "vite"
+  "buildCommand": "cd client && npm run build",
+  "installCommand": "cd client && npm install",
+  "devCommand": "cd client && npm run dev"
 }
