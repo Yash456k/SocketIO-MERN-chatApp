@@ -9,10 +9,6 @@ const Sidebar = ({ chats, setChats }) => {
   const [isSearchBarOpen, setIsSearchBarOpen] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
-  useEffect(() => {
-    console.log("these are chats from sidebar", chats);
-  }, [chats]);
-
   const handleChatClick = (chat) => {
     setSelectedChat(chat);
     console.log("selected Chat changed:", chat);
@@ -43,7 +39,7 @@ const Sidebar = ({ chats, setChats }) => {
             Add / Find User
           </button>
         </div>
-        {chats.length === 0 ? (
+        {console.log(chats) && chats.length === 0 ? (
           <div className="flex flex-col items-center justify-around h-64 w-full text-teal-900">
             <div className="flex items-center justify-center w-full">
               <ArrowUpRight className="mr-2" />

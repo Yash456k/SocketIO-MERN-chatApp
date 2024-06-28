@@ -38,6 +38,7 @@ function Chat() {
         try {
           const { data } = await axios.get(`/api/chats/${user._id}`);
           setChats(data);
+          console.log("chats are", chats);
         } catch (error) {
           console.error(error);
         }
@@ -81,7 +82,7 @@ function Chat() {
   };
 
   return (
-    <div className="flex h-dvh justify-center items-center p-4 bg-[#dbfcb4]">
+    <div className="flex h-dvh justify-center items-center p-4 bg-[#8BC34A]">
       <Sidebar chats={chats} setChats={setChats} />
       <div className="bg-[#F1F8E9] h-full flex flex-col items-center justify-center w-full z-0">
         <MessageList
