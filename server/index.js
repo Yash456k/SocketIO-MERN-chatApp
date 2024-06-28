@@ -3,7 +3,6 @@ import { createServer } from "http";
 import { Server as SocketIoServer } from "socket.io";
 import dotenv from "dotenv";
 import cors from "cors";
-import Chat from "./model/chatModel.js";
 
 import userRouter from "./routes/userRouter.js";
 import chatRouter from "./routes/chatRouter.js";

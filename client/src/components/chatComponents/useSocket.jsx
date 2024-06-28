@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { io } from "socket.io-client";
 import { chatState } from "../../context/Counter";
 
-const ENDPOINT = "http://localhost:4000";
+const ENDPOINT = "https://socketio-mern-chatapp.onrender.com";
 
 const useSocket = (setMessages, setSocketId) => {
   const [socket, setSocket] = useState(null);
