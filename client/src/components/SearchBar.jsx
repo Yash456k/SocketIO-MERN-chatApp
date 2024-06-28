@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { chatState } from "../context/Counter";
 
@@ -7,6 +7,16 @@ const SearchBar = ({ onClose, setChats, chats }) => {
   const [searchResults, setSearchResults] = useState([]);
   const { user, setSelectedChat } = chatState();
   const [selectedSearch, setSelectedSearch] = useState();
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    setIsVisible(true);
+  }, []);
+
+  const handleClose = () => {
+    setIsVisible(false);
+    setTimeout(onClose, 300); // Match this with the transition duration
+  };
 
   const handleClickForSearch = async (userChat) => {
     console.log("set user ", userChat);
@@ -20,11 +30,10 @@ const SearchBar = ({ onClose, setChats, chats }) => {
     if (existingChat) {
       console.log("Chat already exists!", existingChat);
       setSelectedChat(existingChat);
-      onClose();
+      handleClose();
       return;
     }
 
-    // Create a new chat if it doesn't exist
     const messageData = {
       senderId: user._id,
       userId: userChat._id,
@@ -36,8 +45,8 @@ const SearchBar = ({ onClose, setChats, chats }) => {
       console.log("got the chat !", data);
 
       setSelectedChat(data);
-      setChats((prevChats) => [...prevChats, data]); // Trigger a re-render
-      onClose();
+      setChats((prevChats) => [...prevChats, data]);
+      handleClose();
     } catch (error) {
       console.error("Error creating chat:", error);
     }
@@ -67,10 +76,14 @@ const SearchBar = ({ onClose, setChats, chats }) => {
   };
 
   return (
-    <div className="fixed top-0 left-0 w-full h-full bg-blue-300 p-4 shadow-lg z-50">
+    <div
+      className={`fixed top-0 right-0 w-full h-full bg-[#DBFCB4] p-4 shadow-lg z-50 transform transition-transform duration-300 ease-in-out ${
+        isVisible ? "translate-x-0" : "translate-x-full"
+      }`}
+    >
       <button
-        onClick={onClose}
-        className="bg-red-500 hover:bg-red-600 text-white p-2 rounded mb-4 w-full"
+        onClick={handleClose}
+        className="bg-red-500 hover:bg-red-600 text-white p-2 rounded mb-4 w-full transition duration-300 ease-in-out"
       >
         Close
       </button>
@@ -84,7 +97,7 @@ const SearchBar = ({ onClose, setChats, chats }) => {
         />
         <button
           type="submit"
-          className="bg-emerald-500 hover:bg-emerald-600 text-white p-2 rounded w-full"
+          className="bg-[#8BC34A] hover:bg-emerald-600 text-white p-2 rounded w-full transition duration-300 ease-in-out"
         >
           Search
         </button>
@@ -96,8 +109,10 @@ const SearchBar = ({ onClose, setChats, chats }) => {
             onClick={() => {
               handleClickForSearch(user);
             }}
-            className={`cursor-pointer p-2 border border-gray-300 rounded ${
-              selectedSearch === user ? "bg-blue-800" : "bg-blue-400"
+            className={`cursor-pointer p-2 border border-gray-300 rounded transition duration-300 ease-in-out ${
+              selectedSearch === user
+                ? "bg-blue-800"
+                : "bg-blue-400 hover:bg-blue-500"
             }`}
           >
             <div className="font-bold">{user.name}</div>

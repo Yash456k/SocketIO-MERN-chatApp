@@ -3,9 +3,7 @@ import { createServer } from "http";
 import { Server as SocketIoServer } from "socket.io";
 import dotenv from "dotenv";
 import cors from "cors";
-import User from "./model/userModel.js";
 import Chat from "./model/chatModel.js";
-import Message from "./model/messageModel.js";
 
 import userRouter from "./routes/userRouter.js";
 import chatRouter from "./routes/chatRouter.js";
@@ -25,6 +23,7 @@ const io = new SocketIoServer(server, {
     methods: ["GET", "POST"],
   },
 });
+
 app.use(
   cors({
     origin: "https://socket-io-mern-chat-app.vercel.app",
@@ -59,14 +58,6 @@ io.on("connection", (socket) => {
     };
     socket.emit("message-from-server", messageData);
     socket.broadcast.emit("message-from-server", messageData);
-  });
-
-  // New event to handle private messages
-  socket.on("private-message", ({ email, message, senderEmail }) => {
-    const user = users.find((user) => user.email === email);
-    if (user) {
-      io.to(user.id).emit("private-message", { message, from: senderEmail });
-    }
   });
 
   socket.on("join chat", (room) => {
@@ -111,12 +102,9 @@ app.use("/api/chats", chatRouter);
 
 app.use("/api/messages", messageRouter);
 
-app.post("/api/allChats", async (req, res) => {
-  const { userId } = req.body;
-
-  const chats = await Chat.find({ users: { $elemMatch: { $eq: userId } } });
+app.get("/api/checkIfActive", async (req, res) => {
   try {
-    res.status(201).json(chats);
+    res.status(201).json({ works: true });
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
