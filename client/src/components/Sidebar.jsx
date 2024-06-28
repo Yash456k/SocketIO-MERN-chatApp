@@ -7,11 +7,12 @@ import { ArrowUpRight } from "lucide-react";
 const Sidebar = ({ chats, setChats }) => {
   const { setSelectedChat, selectedChat, user } = chatState();
   const [isSearchBarOpen, setIsSearchBarOpen] = useState(false);
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
   const handleChatClick = (chat) => {
     setSelectedChat(chat);
     console.log("selected Chat changed:", chat);
+    setIsSidebarOpen(false);
   };
 
   return (
@@ -25,7 +26,7 @@ const Sidebar = ({ chats, setChats }) => {
         <div className="w-6 h-0.5 bg-white"></div>
       </button>
       <div
-        className={`fixed md:static h-full inset-y-0 left-0 w-3/4 md:w-1/4 bg-[#d2f1ae] text-white overflow-y-auto md:border-r border-[#c5e1a5] transform transition-transform duration-300 ease-in-out z-40
+        className={`fixed md:static h-full inset-y-0 left-0 w-full md:w-1/4 bg-[#d2f1ae] text-white overflow-y-auto md:border-r border-[#c5e1a5] transform transition-transform duration-300 ease-in-out z-40
           ${
             isSidebarOpen ? "translate-x-0" : "-translate-x-full"
           } md:translate-x-0`}
