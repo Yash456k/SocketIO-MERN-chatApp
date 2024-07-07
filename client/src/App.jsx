@@ -14,7 +14,6 @@ function App() {
         <Route path="/login" element={<FirebaseLogin />} />
         <Route path="/trial" element={<TestTrial />} />
         <Route path="/chat" element={<Chat />} />
-        {/* <Route path="/home" element={<Home />} /> */}
       </Routes>
     </>
   );

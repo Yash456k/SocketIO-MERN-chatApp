@@ -2,9 +2,9 @@ import { useEffect, useState } from "react";
 import { io } from "socket.io-client";
 import { chatState } from "../../context/Counter";
 
-const ENDPOINT = "https://socketio-mern-chatapp.onrender.com";
+const ENDPOINT = "http://localhost:4000";
 
-const useSocket = (setMessages, setSocketId) => {
+const useSocket = (setMessages, setChats, setSocketId) => {
   const [socket, setSocket] = useState(null);
   const { user } = chatState();
 
@@ -16,14 +16,22 @@ const useSocket = (setMessages, setSocketId) => {
       setSocketId(newSocket.id);
     });
 
-    newSocket.on("message-from-server", (data) => {
-      console.log("message from server =", data);
+    newSocket.on("message received", (newMessageRecieved) => {
+      setMessages((prevMessages) => [...prevMessages, newMessageRecieved]);
+
+      setChats((prevChats) =>
+        prevChats.map((chat) =>
+          chat._id === newMessageRecieved.chat._id
+            ? { ...chat, latestMessage: newMessageRecieved }
+            : chat
+        )
+      );
     });
 
     return () => {
       newSocket.disconnect();
     };
-  }, []);
+  }, [setMessages, setChats, setSocketId]);
 
   return socket;
 };

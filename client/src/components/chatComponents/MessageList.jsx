@@ -9,21 +9,6 @@ function MessageList({ messages, setMessages, user, messagesEndRef, socket }) {
   const { selectedChat } = chatState();
 
   useEffect(() => {
-    if (!socket) return;
-
-    const handleMessageReceived = (newMessageReceived) => {
-      console.log("got a new message !", newMessageReceived);
-      setMessages((prevMessages) => [...prevMessages, newMessageReceived]);
-    };
-
-    socket.on("message received", handleMessageReceived);
-
-    return () => {
-      socket.off("message received", handleMessageReceived);
-    };
-  }, [socket, setMessages]);
-
-  useEffect(() => {
     if (selectedChat && selectedChat._id) {
       const fetchChatData = async () => {
         try {

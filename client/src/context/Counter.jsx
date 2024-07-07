@@ -5,12 +5,8 @@ export const CounterContext = createContext(null);
 
 export const CounterProvider = (props) => {
   const [user, setUser] = useState("");
-  const [userId, setUserId] = useState("");
-  const [displayName, setDisplayName] = useState("");
-  const [userEmail, setUserEmail] = useState("");
-  const [selectedChat, setSelectedChat] = useState("");
 
-  const navigate = useNavigate();
+  const [selectedChat, setSelectedChat] = useState("");
 
   return (
     <CounterContext.Provider
@@ -19,12 +15,6 @@ export const CounterProvider = (props) => {
         setUser,
         selectedChat,
         setSelectedChat,
-        userId,
-        setUserId,
-        displayName,
-        setDisplayName,
-        userEmail,
-        setUserEmail,
       }}
     >
       {props.children}

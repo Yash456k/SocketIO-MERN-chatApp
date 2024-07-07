@@ -16,7 +16,7 @@ function Chat() {
   const messagesEndRef = useRef(null);
   const navigate = useNavigate();
 
-  const socket = useSocket(setMessages, setSocketId);
+  const socket = useSocket(setMessages, setChats, setSocketId);
 
   useEffect(() => {
     const userInfo = JSON.parse(localStorage.getItem("userInfo"));
@@ -68,12 +68,21 @@ function Chat() {
         const { data } = await axios.post("/api/messages", messageData);
 
         socket.emit("new message", data);
-        console.log("data about to be sent to new message", data);
 
         setMessages((prevMessages) => [
           ...prevMessages,
           { ...data, sender: { _id: user._id } },
         ]);
+
+        // Update the latest message in the corresponding chat
+        setChats((prevChats) =>
+          prevChats.map((chat) =>
+            chat._id === selectedChat._id
+              ? { ...chat, latestMessage: data }
+              : chat
+          )
+        );
+
         setInput("");
       } catch (error) {
         console.error("Error sending message:", error);

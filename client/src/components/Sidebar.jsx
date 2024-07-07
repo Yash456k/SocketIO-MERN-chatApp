@@ -7,10 +7,11 @@ import { ArrowUpRight } from "lucide-react";
 const Sidebar = ({ chats, setChats }) => {
   const { setSelectedChat, selectedChat, user } = chatState();
   const [isSearchBarOpen, setIsSearchBarOpen] = useState(false);
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
   const handleChatClick = (chat) => {
     setSelectedChat(chat);
+    setIsSidebarOpen(false);
     console.log("selected Chat changed:", chat);
   };
 
@@ -25,7 +26,7 @@ const Sidebar = ({ chats, setChats }) => {
         <div className="w-6 h-0.5 bg-white"></div>
       </button>
       <div
-        className={`fixed md:static h-full inset-y-0 left-0 w-3/4 md:w-1/4 bg-[#d2f1ae] text-white overflow-y-auto md:border-r border-[#c5e1a5] transform transition-transform duration-300 ease-in-out z-40
+        className={`fixed md:static h-full inset-y-0 left-0 w-full md:w-1/4 bg-[#d2f1ae] text-white overflow-y-auto md:border-r border-[#c5e1a5] transform transition-transform duration-300 ease-in-out z-40
           ${
             isSidebarOpen ? "translate-x-0" : "-translate-x-full"
           } md:translate-x-0`}
@@ -39,13 +40,16 @@ const Sidebar = ({ chats, setChats }) => {
             Add / Find User
           </button>
         </div>
-        {console.log(chats) && chats.length === 0 ? (
+        {chats.length === 0 ? (
           <div className="flex flex-col items-center justify-around h-64 w-full text-teal-900">
-            <div className="flex items-center justify-center w-full">
-              <ArrowUpRight className="mr-2" />
-              <p>Click "Add / Find User" to get started</p>
+            <div className="flex items-center justify-center w-full flex-col md:p-3 p-8 md:text-sm text-xl">
+              <ArrowUpRight />
+              <p>
+                Click "Add / Find User" to get started. Try finding "Yash456k"
+                and chatting with the creator of this app (me !).
+              </p>
             </div>
-            <div className="text-lg mb-4 text-center">
+            <div className="text-xl mb-4 text-center">
               No chats yet. Start a new conversation!
             </div>
           </div>

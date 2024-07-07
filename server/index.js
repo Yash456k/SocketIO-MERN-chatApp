@@ -18,19 +18,25 @@ app.use(express.json());
 const server = createServer(app);
 const io = new SocketIoServer(server, {
   cors: {
-    origin: "https://socket-io-mern-chat-app.vercel.app",
+    origin: [
+      "https://socket-io-mern-chat-app.vercel.app",
+      "http://localhost:5173",
+    ],
     methods: ["GET", "POST"],
   },
 });
 
+// http://localhost:5173
+
 app.use(
   cors({
-    origin: "https://socket-io-mern-chat-app.vercel.app",
+    origin: [
+      "https://socket-io-mern-chat-app.vercel.app",
+      "http://localhost:5173",
+    ],
     methods: ["GET", "POST"],
   })
 );
-
-let users = [];
 
 io.on("connection", (socket) => {
   console.log("New client connected");
@@ -38,14 +44,6 @@ io.on("connection", (socket) => {
     socket.join(userData._id);
     console.log("user joined !", userData._id);
     socket.emit("connected");
-  });
-
-  socket.on("email-info", (emailSent) => {
-    users.push({
-      id: socket.id,
-      email: emailSent,
-    });
-    console.log(users);
   });
 
   socket.on("message-from-client", (data) => {
@@ -66,7 +64,6 @@ io.on("connection", (socket) => {
 
   socket.on("new message", (newMessageRecieved) => {
     const chat = newMessageRecieved.chat;
-    console.log("the chat is", chat);
 
     if (!chat.users) return console.log("chat.users not defined");
 
@@ -85,8 +82,6 @@ io.on("connection", (socket) => {
 
   socket.on("disconnect", () => {
     console.log(`Client with id : ${socket.id} disconnected`);
-    users = users.filter((user) => user.id !== socket.id);
-    console.log(users);
   });
 });
 
@@ -95,11 +90,15 @@ server.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
 
+//basic routing based on which request is hit
+
 app.use("/api/users", userRouter);
 
 app.use("/api/chats", chatRouter);
 
 app.use("/api/messages", messageRouter);
+
+//needed to implement this because the free tier of render.com sleeps after inactivity , so this request just pings it to wake up
 
 app.get("/api/checkIfActive", async (req, res) => {
   try {
