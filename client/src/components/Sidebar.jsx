@@ -13,6 +13,7 @@ const Sidebar = ({ chats, setChats }) => {
     setSelectedChat(chat);
     setIsSidebarOpen(false);
     console.log("selected Chat changed:", chat);
+    setIsSidebarOpen(false);
   };
 
   return (
