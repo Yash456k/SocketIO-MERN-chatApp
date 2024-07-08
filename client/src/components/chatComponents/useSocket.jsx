@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { io } from "socket.io-client";
+import axios from "axios";
 import { chatState } from "../../context/Counter";
 
-const ENDPOINT = "http://localhost:4000";
+const ENDPOINT = "https://socketio-mern-chatapp.onrender.com";
 
 const useSocket = (setMessages, setChats, setSocketId) => {
   const [socket, setSocket] = useState(null);
@@ -16,16 +17,41 @@ const useSocket = (setMessages, setChats, setSocketId) => {
       setSocketId(newSocket.id);
     });
 
-    newSocket.on("message received", (newMessageRecieved) => {
-      setMessages((prevMessages) => [...prevMessages, newMessageRecieved]);
+    newSocket.on("message received", async (newMessageReceived) => {
+      setMessages((prevMessages) => [...prevMessages, newMessageReceived]);
 
-      setChats((prevChats) =>
-        prevChats.map((chat) =>
-          chat._id === newMessageRecieved.chat._id
-            ? { ...chat, latestMessage: newMessageRecieved }
-            : chat
-        )
-      );
+      setChats((prevChats) => {
+        const chatExists = prevChats.some(
+          (chat) => chat._id === newMessageReceived.chat._id
+        );
+
+        if (chatExists) {
+          return prevChats.map((chat) =>
+            chat._id === newMessageReceived.chat._id
+              ? { ...chat, latestMessage: newMessageReceived }
+              : chat
+          );
+        } else {
+          const fetchChats = async () => {
+            try {
+              const { data } = await axios.get(`/api/chats/${user._id}`);
+              setChats(data);
+            } catch (error) {
+              console.error("Error fetching chats:", error);
+            }
+          };
+          fetchChats();
+
+          return [
+            ...prevChats,
+            {
+              _id: newMessageReceived.chat._id,
+              latestMessage: newMessageReceived,
+              users: [user, newMessageReceived.sender], // Assuming new chat users
+            },
+          ];
+        }
+      });
     });
 
     return () => {
