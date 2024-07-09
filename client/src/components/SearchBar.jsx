@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import { chatState } from "../context/Counter";
 
@@ -52,8 +52,7 @@ const SearchBar = ({ onClose, setChats, chats }) => {
     }
   };
 
-  const handleSearch = async (e) => {
-    e.preventDefault();
+  const handleSearch = async (searchTerm) => {
     if (searchTerm.trim()) {
       try {
         const config = {
@@ -75,6 +74,23 @@ const SearchBar = ({ onClose, setChats, chats }) => {
     }
   };
 
+  const debounce = (func, delay) => {
+    let timeoutId;
+    return (...args) => {
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(() => {
+        func(...args);
+      }, delay);
+    };
+  };
+
+  const debouncedHandleSearch = useCallback(debounce(handleSearch, 600), []);
+
+  const handleInputChange = (e) => {
+    setSearchTerm(e.target.value);
+    debouncedHandleSearch(e.target.value);
+  };
+
   return (
     <div
       className={`fixed top-0 right-0 w-full h-full bg-[#DBFCB4] p-4 shadow-lg z-50 transform transition-transform duration-300 ease-in-out ${
@@ -87,20 +103,14 @@ const SearchBar = ({ onClose, setChats, chats }) => {
       >
         Close
       </button>
-      <form onSubmit={handleSearch} className="mb-4">
+      <form onSubmit={(e) => e.preventDefault()} className="mb-4">
         <input
           type="text"
           value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
+          onChange={handleInputChange}
           placeholder="Search for users..."
           className="w-full p-2 border border-gray-300 rounded mb-2 text-black"
         />
-        <button
-          type="submit"
-          className="bg-[#8BC34A] hover:bg-emerald-600 text-white p-2 rounded w-full transition duration-300 ease-in-out"
-        >
-          Search
-        </button>
       </form>
       <ul className="space-y-2">
         {searchResults.map((user) => (

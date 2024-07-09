@@ -64,7 +64,7 @@ body {
 
 /* Handle */
 .hide-scrollbar::-webkit-scrollbar-thumb {
-  background: rgb(255, 255, 255);
+  background: #d2f1ae;
   border-radius: 10px;
 }
 
