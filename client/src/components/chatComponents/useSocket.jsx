@@ -3,10 +3,7 @@ import { io } from "socket.io-client";
 import axios from "axios";
 import { chatState } from "../../context/Counter";
 
-const ENDPOINT = "http://localhost:4000";
-
-//http://localhost:4000
-//https://socketio-mern-chatapp.onrender.com
+const ENDPOINT = "https://socketio-mern-chatapp.onrender.com";
 
 const useSocket = (setMessages, setChats, setSocketId) => {
   const [socket, setSocket] = useState(null);
@@ -29,11 +26,20 @@ const useSocket = (setMessages, setChats, setSocketId) => {
         );
 
         if (chatExists) {
-          return prevChats.map((chat) =>
+          const updatedChats = prevChats.map((chat) =>
             chat._id === newMessageReceived.chat._id
               ? { ...chat, latestMessage: newMessageReceived }
               : chat
           );
+
+          // Sort chats so that the one with the latest message is on top
+          updatedChats.sort((a, b) => {
+            const aDate = new Date(a.latestMessage?.createdAt || a.updatedAt);
+            const bDate = new Date(b.latestMessage?.createdAt || b.updatedAt);
+            return bDate - aDate;
+          });
+
+          return updatedChats;
         } else {
           const fetchChats = async () => {
             try {
@@ -50,7 +56,7 @@ const useSocket = (setMessages, setChats, setSocketId) => {
             {
               _id: newMessageReceived.chat._id,
               latestMessage: newMessageReceived,
-              users: [user, newMessageReceived.sender], // Assuming new chat users
+              users: [user, newMessageReceived.sender],
             },
           ];
         }

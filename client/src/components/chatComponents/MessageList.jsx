@@ -53,12 +53,15 @@ function MessageList({ messages, setMessages, user, messagesEndRef, socket }) {
         </h2>
       </div>
       <ul className="p-3 mb-2 h-full w-full overflow-y-scroll flex flex-col space-y-2 hide-scrollbar">
-        {" "}
-        {/* Added pl-4 */}
         {messages.map((msg, index) => {
           const isCurrentUser = msg.sender._id === user._id;
           const prevUserId = index > 0 ? messages[index - 1].sender._id : null;
           const showUsername = !prevUserId || prevUserId !== msg.sender._id;
+          const createdAt = new Date(msg.createdAt).toLocaleTimeString([], {
+            hour: "2-digit",
+            minute: "2-digit",
+            hour12: true,
+          });
 
           return (
             <Message
@@ -67,6 +70,7 @@ function MessageList({ messages, setMessages, user, messagesEndRef, socket }) {
               user={user}
               isCurrentUser={isCurrentUser}
               showUsername={showUsername}
+              createdAt={createdAt}
             />
           );
         })}

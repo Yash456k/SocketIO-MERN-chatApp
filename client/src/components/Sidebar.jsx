@@ -71,7 +71,8 @@ const Sidebar = ({ chats, setChats }) => {
                 <div className="font-bold">{otherUser}</div>
                 {latestMessage && (
                   <div className="text-sm text-green-600">
-                    {latestMessage.content}
+                    {latestMessage.content.substr(0, 40) +
+                      `${latestMessage.content.length >= 40 ? "\u2026" : ""}`}
                   </div>
                 )}
               </div>

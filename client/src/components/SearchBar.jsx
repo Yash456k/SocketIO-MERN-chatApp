@@ -15,14 +15,13 @@ const SearchBar = ({ onClose, setChats, chats }) => {
 
   const handleClose = () => {
     setIsVisible(false);
-    setTimeout(onClose, 300); // Match this with the transition duration
+    setTimeout(onClose, 300);
   };
 
   const handleClickForSearch = async (userChat) => {
     console.log("set user ", userChat);
     setSelectedSearch(userChat);
 
-    // Check if the chat already exists
     const existingChat = chats.find((chat) =>
       chat.users.some((u) => u._id === userChat._id)
     );

@@ -74,14 +74,23 @@ function Chat() {
           { ...data, sender: { _id: user._id } },
         ]);
 
-        // Update the latest message in the corresponding chat
-        setChats((prevChats) =>
-          prevChats.map((chat) =>
+        // Update the latest message in the corresponding chat and sort chats
+        setChats((prevChats) => {
+          const updatedChats = prevChats.map((chat) =>
             chat._id === selectedChat._id
               ? { ...chat, latestMessage: data }
               : chat
-          )
-        );
+          );
+
+          // Sort chats so that the one with the latest message is on top
+          updatedChats.sort((a, b) => {
+            const aDate = new Date(a.latestMessage?.createdAt || a.updatedAt);
+            const bDate = new Date(b.latestMessage?.createdAt || b.updatedAt);
+            return bDate - aDate;
+          });
+
+          return updatedChats;
+        });
 
         setInput("");
       } catch (error) {
@@ -106,6 +115,17 @@ function Chat() {
           setInput={setInput}
           sendMessage={sendMessage}
         />
+        <p className="p-2 text-gray-400 md:hidden">
+          Made by{" "}
+          <a
+            href="https://www.linkedin.com/in/yash-khambhatta/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-blue-500"
+          >
+            yash Khambhatta
+          </a>
+        </p>
       </div>
     </div>
   );
