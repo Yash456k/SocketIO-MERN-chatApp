@@ -5,6 +5,9 @@ import { chatState } from "../../context/Counter";
 
 const ENDPOINT = "https://socketio-mern-chatapp.onrender.com";
 
+//http://localhost:4000
+//https://socketio-mern-chatapp.onrender.com
+
 const useSocket = (setMessages, setChats, setSocketId) => {
   const [socket, setSocket] = useState(null);
   const { user } = chatState();
