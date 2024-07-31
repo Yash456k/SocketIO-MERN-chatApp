@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import Message from "./Message";
 import { chatState } from "../../context/Counter";
 import axios from "axios";
-import { User, MessageSquare } from "lucide-react";
+import { User, Users, MessageSquare } from "lucide-react";
 import { getSender } from "../../config/utility";
 
 function MessageList({ messages, setMessages, user, messagesEndRef, socket }) {
@@ -47,9 +47,13 @@ function MessageList({ messages, setMessages, user, messagesEndRef, socket }) {
   return (
     <div className="flex flex-col h-full w-full overflow-hidden from-[#F1F8E9] bg-gradient-to-tr to-[#F1F8E9]">
       <div className="bg-[#4CAF50] p-4 flex items-center justify-center md:justify-start">
-        <User className="text-white mr-3" size={28} />
+        {selectedChat.isGroupChat === false ? (
+          <User className="text-white mr-3" size={28} />
+        ) : (
+          <Users className="text-white mr-3" size={28} />
+        )}
         <h2 className="text-2xl font-semibold text-white">
-          {getSender(user, selectedChat.users)}
+          {getSender(user, selectedChat)}
         </h2>
       </div>
       <ul className="p-3 mb-2 h-full w-full overflow-y-scroll flex flex-col space-y-2 hide-scrollbar">

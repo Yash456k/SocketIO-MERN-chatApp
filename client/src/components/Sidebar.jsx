@@ -1,20 +1,61 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useCallback, useMemo } from "react";
 import { chatState } from "../context/Counter";
 import SearchBar from "./SearchBar";
+import GroupCreationModal from "./GroupCreationModal";
 import { getSender } from "../config/utility";
 import { ArrowUpRight } from "lucide-react";
 
-const Sidebar = ({ chats, setChats }) => {
+const Sidebar = React.memo(({ chats, setChats }) => {
   const { setSelectedChat, selectedChat, user } = chatState();
   const [isSearchBarOpen, setIsSearchBarOpen] = useState(false);
+  const [isGroupModalOpen, setIsGroupModalOpen] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
-  const handleChatClick = (chat) => {
-    setSelectedChat(chat);
-    setIsSidebarOpen(false);
-    console.log("selected Chat changed:", chat);
-    setIsSidebarOpen(false);
-  };
+  const handleChatClick = useCallback(
+    (chat) => {
+      setSelectedChat(chat);
+      setIsSidebarOpen(false);
+      console.log("selected Chat changed:", chat);
+    },
+    [setSelectedChat]
+  );
+
+  const chatElements = useMemo(() => {
+    return chats.map((chat, index) => {
+      console.log(chat);
+
+      const otherUser = getSender(user, chat);
+      console.log("otheruser is", otherUser);
+      const latestMessage = chat.latestMessage;
+      let displayMessage = "No messages yet";
+
+      if (latestMessage) {
+        if (chat.isGroupChat) {
+          displayMessage = `${latestMessage.sender?.name || "Unknown"}: ${
+            latestMessage.content
+          }`;
+        } else {
+          displayMessage = latestMessage.content;
+        }
+      }
+
+      return (
+        <div
+          key={index}
+          className={`px-2 py-3 cursor-pointer text-[#33691E] ${
+            selectedChat === chat ? "bg-[#DCEDC8]" : "bg-[#F1F8E9]"
+          }`}
+          onClick={() => handleChatClick(chat)}
+        >
+          <div className="font-bold">{otherUser}</div>
+          <div className="text-sm text-green-600 overflow-hidden">
+            {displayMessage.substr(0, 40) +
+              (displayMessage.length >= 40 ? "\u2026" : "")}
+          </div>
+        </div>
+      );
+    });
+  }, [chats, selectedChat, user, handleChatClick]);
 
   return (
     <>
@@ -34,12 +75,20 @@ const Sidebar = ({ chats, setChats }) => {
       >
         <div className="flex md:flex-col flex-row text-teal-900 justify-between items-center mb-3 pt-12 md:pt-0">
           <h2 className="text-3xl m-3 font-semibold">Chats</h2>
-          <button
-            onClick={() => setIsSearchBarOpen(true)}
-            className="bg-[#8BC34A] hover:bg-teal-800 text-white p-2 m-1 rounded"
-          >
-            Add / Find User
-          </button>
+          <div className="flex flex-col md:flex-row">
+            <button
+              onClick={() => setIsSearchBarOpen(true)}
+              className="bg-[#8BC34A] hover:bg-teal-800 text-white p-2 m-1 rounded"
+            >
+              Add / Find User
+            </button>
+            {/* <button
+              onClick={() => setIsGroupModalOpen(true)}
+              className="bg-[#8BC34A] hover:bg-teal-800 text-white p-2 m-1 rounded"
+            >
+              Create Group
+            </button> */}
+          </div>
         </div>
         {chats.length === 0 ? (
           <div className="flex flex-col items-center justify-around h-64 w-full text-teal-900">
@@ -55,29 +104,7 @@ const Sidebar = ({ chats, setChats }) => {
             </div>
           </div>
         ) : (
-          chats.map((chat, index) => {
-            console.log(chat);
-            const otherUser = getSender(user, chat.users);
-            console.log("otheruser is", otherUser);
-            const latestMessage = chat.latestMessage;
-            return (
-              <div
-                key={index}
-                className={`px-2 py-3 cursor-pointer text-[#33691E] ${
-                  selectedChat === chat ? "bg-[#DCEDC8]" : "bg-[#F1F8E9]"
-                } `}
-                onClick={() => handleChatClick(chat)}
-              >
-                <div className="font-bold">{otherUser}</div>
-                {latestMessage && (
-                  <div className="text-sm text-green-600">
-                    {latestMessage.content.substr(0, 40) +
-                      `${latestMessage.content.length >= 40 ? "\u2026" : ""}`}
-                  </div>
-                )}
-              </div>
-            );
-          })
+          chatElements
         )}
         {isSearchBarOpen && (
           <SearchBar
@@ -86,9 +113,15 @@ const Sidebar = ({ chats, setChats }) => {
             onClose={() => setIsSearchBarOpen(false)}
           />
         )}
+        {isGroupModalOpen && (
+          <GroupCreationModal
+            onClose={() => setIsGroupModalOpen(false)}
+            setChats={setChats}
+          />
+        )}
       </div>
     </>
   );
-};
+});
 
 export default Sidebar;

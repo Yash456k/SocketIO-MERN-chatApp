@@ -18,7 +18,10 @@ app.use(express.json());
 const server = createServer(app);
 const io = new SocketIoServer(server, {
   cors: {
-    origin: ["https://socket-io-mern-chat-app.vercel.app"],
+    origin: [
+      "https://socket-io-mern-chat-app.vercel.app",
+      "http://localhost:5173",
+    ],
 
     methods: ["GET", "POST"],
   },
@@ -29,51 +32,46 @@ const io = new SocketIoServer(server, {
 
 app.use(
   cors({
-    origin: ["https://socket-io-mern-chat-app.vercel.app"],
+    origin: [
+      "https://socket-io-mern-chat-app.vercel.app",
+      "http://localhost:5173",
+    ],
     methods: ["GET", "POST"],
   })
 );
 
 io.on("connection", (socket) => {
   console.log("New client connected");
+
   socket.on("setup", (userData) => {
     socket.join(userData._id);
     console.log("user joined !", userData._id);
     socket.emit("connected");
   });
 
-  socket.on("message-from-client", (data) => {
-    const messageData = {
-      id: socket.id,
-      info: data,
-      user: data.user,
-      email: data.email,
-    };
-    socket.emit("message-from-server", messageData);
-    socket.broadcast.emit("message-from-server", messageData);
+  socket.on("join chat", (chatId) => {
+    socket.join(chatId);
+    console.log("User joined chat:", chatId);
   });
 
-  socket.on("join chat", (room) => {
-    socket.join(room);
-    console.log("User Joined Room: " + room);
+  socket.on("typing", (chatId) => socket.in(chatId).emit("typing"));
+  socket.on("stop typing", (chatId) => socket.in(chatId).emit("stop typing"));
+
+  socket.on("new message", (newMessageReceived, recieverId) => {
+    const chatId = newMessageReceived.chat._id;
+    console.log("yooooooooo goi reciever id", recieverId);
+
+    if (!chatId) return console.log("Chat ID not defined");
+
+    socket
+      .to(chatId)
+      .to(recieverId)
+      .emit("message received", newMessageReceived);
   });
 
-  socket.on("new message", (newMessageRecieved) => {
-    const chat = newMessageRecieved.chat;
-
-    if (!chat.users) return console.log("chat.users not defined");
-
-    chat.users.forEach((user) => {
-      if (user == newMessageRecieved.sender._id) return;
-      console.log(
-        "message sent to",
-        user,
-        "the message being :",
-        newMessageRecieved
-      );
-
-      socket.to(user).emit("message received", newMessageRecieved);
-    });
+  socket.on("leave chat", (chatId) => {
+    socket.leave(chatId);
+    console.log("User left chat:", chatId);
   });
 
   socket.on("disconnect", () => {

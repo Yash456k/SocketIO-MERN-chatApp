@@ -8,15 +8,16 @@ import useSocket from "./chatComponents/useSocket";
 import axios from "axios";
 
 function Chat() {
-  const { user, setUser, selectedChat, setSelectedChat } = chatState();
+  const { user, setUser, selectedChat } = chatState();
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
   const [socketId, setSocketId] = useState("");
   const [chats, setChats] = useState([]);
+  const [typingUsers, setTypingUsers] = useState(false);
   const messagesEndRef = useRef(null);
   const navigate = useNavigate();
 
-  const socket = useSocket(setMessages, setChats, setSocketId);
+  const socket = useSocket(setMessages, setChats, setSocketId, setTypingUsers);
 
   useEffect(() => {
     const userInfo = JSON.parse(localStorage.getItem("userInfo"));
@@ -66,15 +67,15 @@ function Chat() {
 
       try {
         const { data } = await axios.post("/api/messages", messageData);
+        console.log("data of message sent is", data);
+        const receiverId = data.chat.users.find((id) => id !== user._id);
 
-        socket.emit("new message", data);
-
+        socket.emit("new message", data, receiverId);
         setMessages((prevMessages) => [
           ...prevMessages,
           { ...data, sender: { _id: user._id } },
         ]);
 
-        // Update the latest message in the corresponding chat and sort chats
         setChats((prevChats) => {
           const updatedChats = prevChats.map((chat) =>
             chat._id === selectedChat._id
@@ -82,7 +83,6 @@ function Chat() {
               : chat
           );
 
-          // Sort chats so that the one with the latest message is on top
           updatedChats.sort((a, b) => {
             const aDate = new Date(a.latestMessage?.createdAt || a.updatedAt);
             const bDate = new Date(b.latestMessage?.createdAt || b.updatedAt);
@@ -110,10 +110,17 @@ function Chat() {
           setMessages={setMessages}
           socket={socket}
         />
+        {selectedChat && typingUsers && (
+          <div className="typing-indicator">
+            <p>Other user is typing...</p>
+          </div>
+        )}
         <MessageInput
           input={input}
           setInput={setInput}
           sendMessage={sendMessage}
+          socket={socket}
+          selectedChat={selectedChat}
         />
         <p className="p-2 text-gray-400 md:hidden">
           Made by{" "}
