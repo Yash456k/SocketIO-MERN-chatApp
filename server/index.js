@@ -19,9 +19,7 @@ const server = createServer(app);
 const io = new SocketIoServer(server, {
   cors: {
     origin: [
-      "https://socket-io-mern-chat-app.vercel.app",
-      "http://localhost:5173",
-    ],
+      "https://socket-io-mern-chat-app.vercel.app"
 
     methods: ["GET", "POST"],
   },
@@ -34,7 +32,6 @@ app.use(
   cors({
     origin: [
       "https://socket-io-mern-chat-app.vercel.app",
-      "http://localhost:5173",
     ],
     methods: ["GET", "POST"],
   })
