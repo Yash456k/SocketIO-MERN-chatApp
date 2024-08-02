@@ -16,30 +16,31 @@ connectToDatabase();
 const app = express();
 app.use(express.json());
 const server = createServer(app);
-const io = new SocketIoServer(server, {
-  cors: {
-    origin: [
-      "https://socket-io-mern-chat-app.vercel.app",
-      "http://localhost:5173",
-    ],
 
-    methods: ["GET", "POST"],
+const allowedOrigins = [
+  "https://socket-io-mern-chat-app.vercel.app",
+  "http://localhost:5173",
+  "https://socket-io-mern-chat-app-kkx6-3wxwssob8-yashs-projects-98b2c247.vercel.app",
+];
+
+const corsOptions = {
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
   },
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+  credentials: true,
+};
+
+app.use(cors(corsOptions));
+
+const io = new SocketIoServer(server, {
+  cors: corsOptions,
 });
-
-// http://localhost:5173
-// "http://localhost:5173"
-//socket-io-mern-chat-app-kkx6-3wxwssob8-yashs-projects-98b2c247.vercel.app
-
-app.use(
-  cors({
-    origin: [
-      "https://socket-io-mern-chat-app.vercel.app",
-      "http://localhost:5173",
-    ],
-    methods: ["GET", "POST"],
-  })
-);
 
 io.on("connection", (socket) => {
   console.log("New client connected");
