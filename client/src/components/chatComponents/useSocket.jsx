@@ -3,7 +3,11 @@ import { io } from "socket.io-client";
 import axios from "axios";
 import { chatState } from "../../context/Counter";
 
-const ENDPOINT = "https://socketio-mern-chatapp.onrender.com";
+const ENDPOINT =
+  "https://socket-io-mern-chat-app-kkx6-3wxwssob8-yashs-projects-98b2c247.vercel.app";
+
+// https://socket-io-mern-chat-app-kkx6-3wxwssob8-yashs-projects-98b2c247.vercel.app
+// https://socketio-mern-chatapp.onrender.com
 
 const useSocket = (setMessages, setChats, setSocketId, setTypingUsers) => {
   const [socket, setSocket] = useState(null);
