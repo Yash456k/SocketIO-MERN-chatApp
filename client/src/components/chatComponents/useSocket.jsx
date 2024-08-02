@@ -14,7 +14,9 @@ const useSocket = (setMessages, setChats, setSocketId, setTypingUsers) => {
   const { user } = chatState();
 
   useEffect(() => {
-    const newSocket = io(ENDPOINT);
+    const newSocket = io(ENDPOINT, {
+      transports: ["websocket", "polling"],
+    });
     setSocket(newSocket);
 
     newSocket.on("connect", () => {

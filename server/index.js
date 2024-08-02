@@ -30,7 +30,7 @@ app.use(cors(corsOptions));
 
 const io = new SocketIoServer(server, {
   cors: corsOptions,
-  transports: ["websocket"],
+  transports: ["polling", "websocket"],
 });
 
 io.on("connection", (socket) => {
