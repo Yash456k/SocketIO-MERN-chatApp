@@ -17,22 +17,12 @@ const app = express();
 app.use(express.json());
 const server = createServer(app);
 
-const allowedOrigins = [
-  "https://socket-io-mern-chat-app.vercel.app",
-  "http://localhost:5173",
-  "https://socket-io-mern-chat-app-kkx6-3wxwssob8-yashs-projects-98b2c247.vercel.app",
-];
-
 const corsOptions = {
-  origin: function (origin, callback) {
-    if (!origin || allowedOrigins.indexOf(origin) !== -1) {
-      callback(null, true);
-    } else {
-      callback(new Error("Not allowed by CORS"));
-    }
-  },
-  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-  allowedHeaders: ["Content-Type", "Authorization"],
+  origin: [
+    "https://socket-io-mern-chat-app.vercel.app",
+    "http://localhost:5173",
+  ],
+  methods: ["GET", "POST"],
   credentials: true,
 };
 
@@ -40,6 +30,7 @@ app.use(cors(corsOptions));
 
 const io = new SocketIoServer(server, {
   cors: corsOptions,
+  transports: ["websocket"],
 });
 
 io.on("connection", (socket) => {
