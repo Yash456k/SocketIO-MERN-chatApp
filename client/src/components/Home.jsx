@@ -121,9 +121,18 @@ const ChatAppFrontPage = () => {
         )}
       </div>
 
-      <div className="absolute bottom-4 left-4 right-4 flex justify-between text-sm text-emerald-300">
+      <div className="absolute bottom-4 left-4 right-4 flex justify-between text-sm md:text-lg text-emerald-300">
         <span>© 2024 ChatApp</span>
-        <span>Privacy Policy | Terms of Service</span>
+        <span>
+          Made by{" "}
+          <a
+            href="https://www.linkedin.com/in/yash-khambhatta/"
+            target="_blank"
+            className=" underline"
+          >
+            Yash Khambhatta
+          </a>
+        </span>
       </div>
 
       {showAlert && (

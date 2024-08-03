@@ -1,19 +1,21 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Message from "./Message";
 import { chatState } from "../../context/Counter";
 import axios from "axios";
-import { User, Users, MessageSquare } from "lucide-react";
+import { User, Users, MessageSquare, Loader } from "lucide-react";
 import { getSender } from "../../config/utility";
 
 function MessageList({ messages, setMessages, user, messagesEndRef, socket }) {
+  const [messageLoading, setMessageLoading] = useState();
   const { selectedChat } = chatState();
 
   useEffect(() => {
     if (selectedChat && selectedChat._id) {
       const fetchChatData = async () => {
         try {
+          setMessageLoading(true);
           const { data } = await axios.get(`/api/messages/${selectedChat._id}`);
-
+          setMessageLoading(false);
           console.log("message data sent is", data);
           setMessages(data);
           if (socket) {
@@ -56,30 +58,39 @@ function MessageList({ messages, setMessages, user, messagesEndRef, socket }) {
           {getSender(user, selectedChat)}
         </h2>
       </div>
-      <ul className="p-3 mb-2 h-full w-full overflow-y-scroll flex flex-col space-y-2 hide-scrollbar">
-        {messages.map((msg, index) => {
-          const isCurrentUser = msg.sender._id === user._id;
-          const prevUserId = index > 0 ? messages[index - 1].sender._id : null;
-          const showUsername = !prevUserId || prevUserId !== msg.sender._id;
-          const createdAt = new Date(msg.createdAt).toLocaleTimeString([], {
-            hour: "2-digit",
-            minute: "2-digit",
-            hour12: true,
-          });
 
-          return (
-            <Message
-              key={msg._id}
-              msg={msg}
-              user={user}
-              isCurrentUser={isCurrentUser}
-              showUsername={showUsername}
-              createdAt={createdAt}
-            />
-          );
-        })}
-        <div ref={messagesEndRef} />
-      </ul>
+      {messageLoading ? (
+        <Loader
+          className="h-full animate-spin mx-auto mb-4 place-items-center"
+          size={50}
+        />
+      ) : (
+        <ul className="p-3 mb-2 h-full w-full overflow-y-scroll flex flex-col space-y-2 hide-scrollbar">
+          {messages.map((msg, index) => {
+            const isCurrentUser = msg.sender._id === user._id;
+            const prevUserId =
+              index > 0 ? messages[index - 1].sender._id : null;
+            const showUsername = !prevUserId || prevUserId !== msg.sender._id;
+            const createdAt = new Date(msg.createdAt).toLocaleTimeString([], {
+              hour: "2-digit",
+              minute: "2-digit",
+              hour12: true,
+            });
+
+            return (
+              <Message
+                key={msg._id}
+                msg={msg}
+                user={user}
+                isCurrentUser={isCurrentUser}
+                showUsername={showUsername}
+                createdAt={createdAt}
+              />
+            );
+          })}
+          <div ref={messagesEndRef} />
+        </ul>
+      )}
     </div>
   );
 }
