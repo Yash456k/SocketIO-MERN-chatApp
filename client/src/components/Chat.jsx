@@ -14,6 +14,8 @@ function Chat() {
   const [socketId, setSocketId] = useState("");
   const [chats, setChats] = useState([]);
   const [typingUsers, setTypingUsers] = useState(false);
+  const [chatsLoading, setChatsLoading] = useState(false);
+
   const messagesEndRef = useRef(null);
   const navigate = useNavigate();
 
@@ -37,7 +39,9 @@ function Chat() {
     if (user && user._id) {
       const fetchChatData = async () => {
         try {
+          setChatsLoading(true);
           const { data } = await axios.get(`/api/chats/${user._id}`);
+          setChatsLoading(false);
           setChats(data);
           console.log("chats are", chats);
         } catch (error) {
@@ -101,7 +105,7 @@ function Chat() {
 
   return (
     <div className="flex h-dvh justify-center items-center p-4 bg-[#8BC34A]">
-      <Sidebar chats={chats} setChats={setChats} />
+      <Sidebar chats={chats} setChats={setChats} chatsLoading={chatsLoading} />
       <div className="bg-[#F1F8E9] h-full flex flex-col items-center justify-center w-full z-0">
         <MessageList
           messages={messages}

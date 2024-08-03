@@ -3,9 +3,9 @@ import { chatState } from "../context/Counter";
 import SearchBar from "./SearchBar";
 import GroupCreationModal from "./GroupCreationModal";
 import { getSender } from "../config/utility";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, Loader } from "lucide-react";
 
-const Sidebar = React.memo(({ chats, setChats }) => {
+const Sidebar = React.memo(({ chats, setChats, chatsLoading }) => {
   const { setSelectedChat, selectedChat, user } = chatState();
   const [isSearchBarOpen, setIsSearchBarOpen] = useState(false);
   const [isGroupModalOpen, setIsGroupModalOpen] = useState(false);
@@ -49,7 +49,7 @@ const Sidebar = React.memo(({ chats, setChats }) => {
         >
           <div className="font-bold">{otherUser}</div>
           <div className="text-sm text-green-600 overflow-hidden">
-            {displayMessage.substr(0, 40) +
+            {displayMessage.substring(0, 40) +
               (displayMessage.length >= 40 ? "\u2026" : "")}
           </div>
         </div>
@@ -82,15 +82,14 @@ const Sidebar = React.memo(({ chats, setChats }) => {
             >
               Add / Find User
             </button>
-            {/* <button
-              onClick={() => setIsGroupModalOpen(true)}
-              className="bg-[#8BC34A] hover:bg-teal-800 text-white p-2 m-1 rounded"
-            >
-              Create Group
-            </button> */}
           </div>
         </div>
-        {chats.length === 0 ? (
+        {chatsLoading ? (
+          <h1 className="text-2xl text-teal-900 text-center mt-8">
+            Loading...
+            <Loader className="animate-spin mx-auto mb-4" size={40} />
+          </h1>
+        ) : chats.length === 0 ? (
           <div className="flex flex-col items-center justify-around h-64 w-full text-teal-900">
             <div className="flex items-center justify-center w-full flex-col md:p-3 p-8 md:text-sm text-xl">
               <ArrowUpRight />
