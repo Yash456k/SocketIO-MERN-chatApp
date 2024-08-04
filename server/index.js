@@ -18,10 +18,7 @@ app.use(express.json());
 const server = createServer(app);
 
 const corsOptions = {
-  origin: [
-    "https://socket-io-mern-chat-app.vercel.app",
-    "http://localhost:5173",
-  ],
+  origin: ["https://socket-io-mern-chat-app.vercel.app"],
   methods: ["GET", "POST"],
   credentials: true,
 };
