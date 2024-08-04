@@ -1,7 +1,7 @@
 import express from "express";
 import { createServer } from "http";
 import { Server as SocketIoServer } from "socket.io";
-import dotenv from "dotenv";
+import.meta.env;
 import cors from "cors";
 
 import userRouter from "./routes/userRouter.js";
@@ -10,7 +10,6 @@ import messageRouter from "./routes/messageRouter.js";
 
 import connectToDatabase from "./databaseConfig/connectToDatabase.js";
 
-dotenv.config();
 connectToDatabase();
 
 const app = express();

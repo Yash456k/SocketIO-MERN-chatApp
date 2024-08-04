@@ -8,6 +8,7 @@ const ENDPOINT = "https://socket-io-mern-chat-app-kkx6.vercel.app";
 // https://socket-io-mern-chat-app-kkx6-3wxwssob8-yashs-projects-98b2c247.vercel.app
 // https://socketio-mern-chatapp.onrender.com
 // https://socket-io-mern-chat-app-kkx6.vercel.app
+// http://localhost:4000
 
 const useSocket = (setMessages, setChats, setTypingUsers) => {
   const [socket, setSocket] = useState(null);
@@ -31,14 +32,12 @@ const useSocket = (setMessages, setChats, setTypingUsers) => {
         console.log("chat index is", chatIndex);
 
         if (chatIndex !== -1) {
-          // Chat exists, update it
           const updatedChats = [...prevChats];
           updatedChats[chatIndex] = {
             ...updatedChats[chatIndex],
             latestMessage: newMessageReceived,
           };
 
-          // Sort chats
           updatedChats.sort((a, b) => {
             const aDate = new Date(a.latestMessage?.createdAt || a.updatedAt);
             const bDate = new Date(b.latestMessage?.createdAt || b.updatedAt);
@@ -47,7 +46,6 @@ const useSocket = (setMessages, setChats, setTypingUsers) => {
 
           return updatedChats;
         } else {
-          // Chat doesn't exist locally, fetch all chats
           const fetchChats = async () => {
             try {
               console.log(
@@ -61,7 +59,6 @@ const useSocket = (setMessages, setChats, setTypingUsers) => {
           };
           fetchChats();
 
-          // Return the current state while the fetch is in progress
           return prevChats;
         }
       });

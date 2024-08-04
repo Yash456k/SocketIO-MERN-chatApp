@@ -31,13 +31,15 @@ function Message({ msg, isCurrentUser, showUsername, createdAt }) {
         )}
         <div className="">
           <div className="mr-7 relative top-0.5">{msg.content}</div>
-          <div
-            className={`relative left-1.5 top-2 float-right text-xs md:text-xs text-[0.6rem] ${
-              isCurrentUser ? "text-white" : "text-gray-600"
-            }`}
-          >
-            {createdAt}
-          </div>
+          {createdAt != "Invalid Date" ? (
+            <div
+              className={`relative left-1.5 top-2 float-right text-xs md:text-xs text-[0.6rem] ${
+                isCurrentUser ? "text-white" : "text-gray-600"
+              }`}
+            >
+              {createdAt}
+            </div>
+          ) : null}
         </div>
       </div>
     </li>

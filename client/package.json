@@ -13,6 +13,7 @@
     "@google/generative-ai": "^0.16.0",
     "@react-oauth/google": "^0.12.1",
     "axios": "^1.7.2",
+    "dotenv": "^16.4.5",
     "firebase": "^10.12.2",
     "jwt-decode": "^4.0.0",
     "lucide-react": "^0.396.0",

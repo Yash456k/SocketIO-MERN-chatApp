@@ -6,6 +6,7 @@ import MessageInput from "./chatComponents/MessageInput";
 import Sidebar from "./Sidebar";
 import useSocket from "./chatComponents/useSocket";
 import axios from "axios";
+import { GoogleGenerativeAI } from "@google/generative-ai";
 
 function Chat() {
   const { user, setUser, selectedChat } = chatState();
@@ -15,6 +16,10 @@ function Chat() {
   const [typingUsers, setTypingUsers] = useState(false);
   const [chatsLoading, setChatsLoading] = useState(false);
   const [sendingMessage, setSendingMessage] = useState(false);
+  const [isAi, setIsAi] = useState(false);
+  const [aiChat, setAiChat] = useState(null);
+  const [aiHistory, setAiHistory] = useState([]);
+  const [aiConversation, setAiConversation] = useState([]);
 
   const messagesEndRef = useRef(null);
   const navigate = useNavigate();
@@ -60,53 +65,109 @@ function Chat() {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
+  useEffect(() => {
+    if (isAi) {
+      initializeAiChat();
+    } else {
+    }
+  }, [isAi]);
+
+  const initializeAiChat = async () => {
+    const genAI = new GoogleGenerativeAI(import.meta.env.VITE_GEMINI_API_KEY);
+    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+    const chat = model.startChat({
+      history: aiHistory,
+      generationConfig: {
+        maxOutputTokens: 100,
+      },
+    });
+    setAiChat(chat);
+  };
+
   const sendMessage = async (e) => {
     e.preventDefault();
-    if (input.trim() && socket && selectedChat && user) {
-      const messageData = {
-        senderId: user._id,
-        chatId: selectedChat._id,
-        content: input,
-      };
+    if (isAi) {
+      if (input.trim() && aiChat) {
+        try {
+          setAiConversation((prevMessages) => [
+            ...prevMessages,
+            { content: input, sender: { _id: user._id } },
+          ]);
+          setInput("");
+          setSendingMessage(true);
 
-      try {
-        setInput("");
-        setSendingMessage(true);
-        const { data } = await axios.post("/api/messages", messageData);
-        console.log("data of message sent is", data);
-        const receiverId = data.chat.users.find((id) => id !== user._id);
+          const updatedHistory = [...aiHistory, { role: "user", parts: input }];
+          setAiHistory(updatedHistory);
 
-        socket.emit("new message", data, receiverId);
-        setMessages((prevMessages) => [
-          ...prevMessages,
-          { ...data, sender: { _id: user._id } },
-        ]);
+          const result = await aiChat.sendMessage(input);
+          const response = await result.response;
+          const aiReply = response.text();
 
-        setChats((prevChats) => {
-          const updatedChats = prevChats.map((chat) =>
-            chat._id === selectedChat._id
-              ? { ...chat, latestMessage: data }
-              : chat
-          );
+          setAiHistory([...updatedHistory, { role: "model", parts: aiReply }]);
+
+          setAiConversation((prevMessages) => [
+            ...prevMessages,
+            { content: aiReply, sender: { _id: "AI" } },
+          ]);
           setSendingMessage(false);
+        } catch (error) {
+          console.error("Error sending message to AI:", error);
+          setSendingMessage(false);
+        }
+      }
+    } else {
+      if (input.trim() && socket && selectedChat && user) {
+        const messageData = {
+          senderId: user._id,
+          chatId: selectedChat._id,
+          content: input,
+        };
 
-          updatedChats.sort((a, b) => {
-            const aDate = new Date(a.latestMessage?.createdAt || a.updatedAt);
-            const bDate = new Date(b.latestMessage?.createdAt || b.updatedAt);
-            return bDate - aDate;
+        try {
+          setInput("");
+          setSendingMessage(true);
+          const { data } = await axios.post("/api/messages", messageData);
+          console.log("data of message sent is", data);
+          const receiverId = data.chat.users.find((id) => id !== user._id);
+
+          socket.emit("new message", data, receiverId);
+          setMessages((prevMessages) => [
+            ...prevMessages,
+            { ...data, sender: { _id: user._id } },
+          ]);
+
+          setChats((prevChats) => {
+            const updatedChats = prevChats.map((chat) =>
+              chat._id === selectedChat._id
+                ? { ...chat, latestMessage: data }
+                : chat
+            );
+            setSendingMessage(false);
+
+            updatedChats.sort((a, b) => {
+              const aDate = new Date(a.latestMessage?.createdAt || a.updatedAt);
+              const bDate = new Date(b.latestMessage?.createdAt || b.updatedAt);
+              return bDate - aDate;
+            });
+
+            return updatedChats;
           });
-
-          return updatedChats;
-        });
-      } catch (error) {
-        console.error("Error sending message:", error);
+        } catch (error) {
+          console.error("Error sending message:", error);
+        }
       }
     }
   };
 
   return (
     <div className="flex h-dvh justify-center items-center p-4 bg-[#8BC34A]">
-      <Sidebar chats={chats} setChats={setChats} chatsLoading={chatsLoading} />
+      <Sidebar
+        chats={chats}
+        setChats={setChats}
+        chatsLoading={chatsLoading}
+        setIsAi={setIsAi}
+        setMessages={setMessages}
+      />
       <div className="bg-[#F1F8E9] h-full flex flex-col items-center justify-center w-full z-0">
         <MessageList
           messages={messages}
@@ -114,8 +175,10 @@ function Chat() {
           messagesEndRef={messagesEndRef}
           setMessages={setMessages}
           socket={socket}
+          isAi={isAi}
+          aiConversation={aiConversation}
         />
-        {selectedChat && typingUsers && (
+        {selectedChat && typingUsers && !isAi && (
           <div className="typing-indicator">
             <p>Other user is typing...</p>
           </div>
