@@ -73,9 +73,7 @@ function Chat() {
   }, [isAi]);
 
   const initializeAiChat = async () => {
-    const genAI = new GoogleGenerativeAI(
-      "AIzaSyAqLNyyFSa_dD8I50IrV7EB8k-6dtjEcXY"
-    );
+    const genAI = new GoogleGenerativeAI(import.meta.env.VITE_GEMINI_API_KEY);
     const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
     const chat = model.startChat({
       history: aiHistory,
