@@ -1,6 +1,13 @@
 import React, { useState } from "react";
 
-function MessageInput({ input, setInput, sendMessage, socket, selectedChat }) {
+function MessageInput({
+  input,
+  setInput,
+  sendMessage,
+  socket,
+  selectedChat,
+  sendingMessage,
+}) {
   const [typingTimeout, setTypingTimeout] = useState(null);
 
   const handleInputChange = (e) => {
@@ -36,8 +43,13 @@ function MessageInput({ input, setInput, sendMessage, socket, selectedChat }) {
         autoComplete="off"
         placeholder="Type a message"
       />
-      <button className="p-2 md:w-1/5 w-full m-1 bg-[#8BC34A] text-white rounded-full hover:bg-blue-700">
-        Send
+      <button
+        className={`${
+          sendingMessage &&
+          "opacity-50 cursor-not-allowed pointer-events-none hover:pointer-events-none"
+        } p-2 md:w-1/5 w-full m-1 bg-[#8BC34A] text-white rounded-full hover:bg-green-700`}
+      >
+        {sendingMessage ? "Sending..." : "Send"}
       </button>
     </form>
   );

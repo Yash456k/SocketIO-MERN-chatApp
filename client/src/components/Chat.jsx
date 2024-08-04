@@ -11,15 +11,15 @@ function Chat() {
   const { user, setUser, selectedChat } = chatState();
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
-  const [socketId, setSocketId] = useState("");
   const [chats, setChats] = useState([]);
   const [typingUsers, setTypingUsers] = useState(false);
   const [chatsLoading, setChatsLoading] = useState(false);
+  const [sendingMessage, setSendingMessage] = useState(false);
 
   const messagesEndRef = useRef(null);
   const navigate = useNavigate();
 
-  const socket = useSocket(setMessages, setChats, setSocketId, setTypingUsers);
+  const socket = useSocket(setMessages, setChats, setTypingUsers);
 
   useEffect(() => {
     const userInfo = JSON.parse(localStorage.getItem("userInfo"));
@@ -70,6 +70,8 @@ function Chat() {
       };
 
       try {
+        setInput("");
+        setSendingMessage(true);
         const { data } = await axios.post("/api/messages", messageData);
         console.log("data of message sent is", data);
         const receiverId = data.chat.users.find((id) => id !== user._id);
@@ -86,6 +88,7 @@ function Chat() {
               ? { ...chat, latestMessage: data }
               : chat
           );
+          setSendingMessage(false);
 
           updatedChats.sort((a, b) => {
             const aDate = new Date(a.latestMessage?.createdAt || a.updatedAt);
@@ -95,8 +98,6 @@ function Chat() {
 
           return updatedChats;
         });
-
-        setInput("");
       } catch (error) {
         console.error("Error sending message:", error);
       }
@@ -125,6 +126,7 @@ function Chat() {
           sendMessage={sendMessage}
           socket={socket}
           selectedChat={selectedChat}
+          sendingMessage={sendingMessage}
         />
         <p className="p-2 text-gray-400 md:hidden">
           Made by{" "}

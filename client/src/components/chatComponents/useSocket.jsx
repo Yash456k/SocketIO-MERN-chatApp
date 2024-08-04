@@ -9,7 +9,7 @@ const ENDPOINT = "https://socket-io-mern-chat-app-kkx6.vercel.app";
 // https://socketio-mern-chatapp.onrender.com
 // https://socket-io-mern-chat-app-kkx6.vercel.app
 
-const useSocket = (setMessages, setChats, setSocketId, setTypingUsers) => {
+const useSocket = (setMessages, setChats, setTypingUsers) => {
   const [socket, setSocket] = useState(null);
   const { user } = chatState();
 
@@ -18,10 +18,6 @@ const useSocket = (setMessages, setChats, setSocketId, setTypingUsers) => {
       transports: ["websocket", "polling"],
     });
     setSocket(newSocket);
-
-    newSocket.on("connect", () => {
-      setSocketId(newSocket.id);
-    });
 
     newSocket.on("message received", async (newMessageReceived) => {
       setMessages((prevMessages) => [...prevMessages, newMessageReceived]);
@@ -84,7 +80,7 @@ const useSocket = (setMessages, setChats, setSocketId, setTypingUsers) => {
     return () => {
       newSocket.disconnect();
     };
-  }, [setMessages, setChats, setSocketId, setTypingUsers, user._id]);
+  }, [setMessages, setChats, setTypingUsers, user._id]);
 
   return socket;
 };
