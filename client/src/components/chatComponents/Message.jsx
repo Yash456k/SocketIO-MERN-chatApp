@@ -3,6 +3,7 @@ import { stringToColor } from "./utils";
 
 function Message({ msg, isCurrentUser, showUsername, createdAt }) {
   const userColor = stringToColor(msg.sender.name);
+  const isValidDate = createdAt !== "Invalid Date";
 
   return (
     <li
@@ -29,17 +30,19 @@ function Message({ msg, isCurrentUser, showUsername, createdAt }) {
             {msg.sender.name}
           </div>
         )}
-        <div className="">
-          <div className="mr-7 relative top-0.5">{msg.content}</div>
-          {createdAt != "Invalid Date" ? (
+        <div className={isValidDate ? "pb-4" : ""}>
+          <div className={`${isValidDate && "mr-7"}  relative top-0.5`}>
+            {msg.content}
+          </div>
+          {isValidDate && (
             <div
-              className={`relative left-1.5 top-2 float-right text-xs md:text-xs text-[0.6rem] ${
+              className={`absolute bottom-1 right-3 text-xs md:text-xs text-[0.6rem] ${
                 isCurrentUser ? "text-white" : "text-gray-600"
               }`}
             >
               {createdAt}
             </div>
-          ) : null}
+          )}
         </div>
       </div>
     </li>

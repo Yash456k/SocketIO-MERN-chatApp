@@ -1,5 +1,5 @@
 export function hashString(str) {
-  if (!str) return 0; // Return 0 if str is undefined, null, or empty
+  if (!str) return 0; // incase string is empty
   let hash = 0;
   for (let i = 0; i < str.length; i++) {
     const char = str.charCodeAt(i);

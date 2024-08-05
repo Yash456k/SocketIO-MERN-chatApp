@@ -21,7 +21,7 @@ const Sidebar = React.memo(
 
     const handleChatClick = useCallback(
       (chat) => {
-        setIsAi(false)
+        setIsAi(false);
         setSelectedChat(chat);
         setIsSidebarOpen(false);
         console.log("selected Chat changed:", chat);
@@ -84,7 +84,7 @@ const Sidebar = React.memo(
         >
           <div className="flex md:flex-col flex-row text-teal-900 justify-between items-center mb-3 pt-12 md:pt-0">
             <h2 className="text-3xl m-3 font-semibold">Chats</h2>
-            <div className="flex flex-col md:flex-row">
+            <div className="flex flex-col">
               <button
                 onClick={() => setIsSearchBarOpen(true)}
                 className="bg-[#8BC34A] hover:bg-teal-800 text-white p-2 m-1 rounded"
@@ -93,9 +93,12 @@ const Sidebar = React.memo(
               </button>
               <button
                 onClick={() => setAiChat()}
-                className="bg-[#8BC34A] hover:bg-teal-800 text-white p-2 m-1 rounded"
+                className="bg-white  text-black p-2 m-1 rounded flex items-center justify-center "
               >
-                AI
+                <img
+                  className="max-h-6 "
+                  src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8a/Google_Gemini_logo.svg/516px-Google_Gemini_logo.svg.png"
+                />
               </button>
             </div>
           </div>
