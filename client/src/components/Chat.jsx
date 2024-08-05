@@ -7,6 +7,7 @@ import Sidebar from "./Sidebar";
 import useSocket from "./chatComponents/useSocket";
 import axios from "axios";
 import { GoogleGenerativeAI } from "@google/generative-ai";
+import { marked } from "marked";
 
 function Chat() {
   const { user, setUser, selectedChat } = chatState();
@@ -101,7 +102,8 @@ function Chat() {
 
           const result = await aiChat.sendMessage(input);
           const response = await result.response;
-          const aiReply = response.text();
+          const reply = response.text();
+          const aiReply = marked.parse(reply);
 
           setAiHistory([...updatedHistory, { role: "model", parts: aiReply }]);
 

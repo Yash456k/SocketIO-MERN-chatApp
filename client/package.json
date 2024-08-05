@@ -17,6 +17,7 @@
     "firebase": "^10.12.2",
     "jwt-decode": "^4.0.0",
     "lucide-react": "^0.396.0",
+    "marked": "^13.0.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router": "^6.23.1",
