@@ -78,7 +78,7 @@ function Chat() {
     const chat = model.startChat({
       history: aiHistory,
       generationConfig: {
-        maxOutputTokens: 100,
+        maxOutputTokens: 600,
       },
     });
     setAiChat(chat);
