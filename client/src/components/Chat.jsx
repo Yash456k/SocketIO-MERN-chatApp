@@ -101,8 +101,8 @@ function Chat() {
 
           const result = await aiChat.sendMessage(input);
           const response = await result.response;
-          const aiReply = response.text();
-
+          const reply = response.text();
+          const aiReply = reply.replace(/\*/g, "");
           setAiHistory([...updatedHistory, { role: "model", parts: aiReply }]);
 
           setAiConversation((prevMessages) => [
