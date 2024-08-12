@@ -24,17 +24,14 @@ const Sidebar = React.memo(
         setIsAi(false);
         setSelectedChat(chat);
         setIsSidebarOpen(false);
-        console.log("selected Chat changed:", chat);
       },
       [setSelectedChat]
     );
 
     const chatElements = useMemo(() => {
       return chats.map((chat, index) => {
-        console.log(chat);
-
         const otherUser = getSender(user, chat);
-        console.log("otheruser is", otherUser);
+
         const latestMessage = chat.latestMessage;
         let displayMessage = "No messages yet";
 

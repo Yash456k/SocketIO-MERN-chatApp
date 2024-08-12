@@ -12,7 +12,6 @@ const GroupCreationModal = ({ onClose, setChats }) => {
   const handleSearch = async (searchTerm) => {
     if (searchTerm.trim()) {
       try {
-        console.log(user);
         const config = {
           headers: {
             "Content-type": "application/json",
@@ -70,8 +69,6 @@ const GroupCreationModal = ({ onClose, setChats }) => {
           ],
           groupAdmin: user._id,
         };
-
-        console.log(groupData);
 
         const { data } = await axios.post(
           "/api/chats/createGroup",

@@ -1,20 +1,14 @@
 import { initializeApp } from "firebase/app";
-
 import { getAuth } from "firebase/auth";
 
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
-
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: "AIzaSyA4gXCXgaM2Ojv7mxMHXoxruWQD2ZlTVSo",
-  authDomain: "chatapp-b24e5.firebaseapp.com",
-  projectId: "chatapp-b24e5",
-  storageBucket: "chatapp-b24e5.appspot.com",
-  messagingSenderId: "118083428712",
-  appId: "1:118083428712:web:7afdfdc00c89099377b6dd",
-  measurementId: "G-NYYXTQ2LZH",
+  apiKey: import.meta.env.VITE_FIREBASE_API,
+  authDomain: import.meta.env.VITE_FIREBASE_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID,
+  measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID,
 };
 
 // Initialize Firebase

@@ -27,13 +27,12 @@ const FirebaseLogin = () => {
 
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("userInfo"));
-    console.log("user from firebaselogin under useEffect", user);
+
     if (user) navigate("/chat");
   }, []);
 
   const googleLoginSuccess = async (credentialResponse) => {
     const decoded = jwtDecode(credentialResponse.credential);
-    console.log(decoded);
 
     const credential = GoogleAuthProvider.credential(
       credentialResponse.credential
@@ -41,7 +40,6 @@ const FirebaseLogin = () => {
 
     try {
       const userCredential = await signInWithCredential(auth, credential);
-      console.log("User signed in with Google:", userCredential);
 
       const response = await axios.post("/api/users/login", {
         userEmail: decoded.email,
@@ -258,9 +256,7 @@ const FirebaseLogin = () => {
             <div className="mt-6 flex justify-center">
               <GoogleLogin
                 onSuccess={googleLoginSuccess}
-                onError={() => {
-                  console.log("Login Failed");
-                }}
+                onError={() => {}}
                 render={(renderProps) => (
                   <button
                     onClick={renderProps.onClick}

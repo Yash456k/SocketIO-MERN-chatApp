@@ -127,7 +127,6 @@ const MessageList = ({
         setMessageLoading(true);
         const { data } = await axios.get(`/api/messages/${selectedChat._id}`);
         setMessageLoading(false);
-        console.log("message data sent is", data);
         setMessages(data);
         if (socket) {
           socket.emit("join chat", selectedChat._id);

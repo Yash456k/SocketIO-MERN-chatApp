@@ -19,7 +19,6 @@ const SearchBar = ({ onClose, setChats, chats }) => {
   };
 
   const handleClickForSearch = async (userChat) => {
-    console.log("set user ", userChat);
     setSelectedSearch(userChat);
 
     const existingChat = chats.find((chat) =>
@@ -27,7 +26,6 @@ const SearchBar = ({ onClose, setChats, chats }) => {
     );
 
     if (existingChat) {
-      console.log("Chat already exists!", existingChat);
       setSelectedChat(existingChat);
       handleClose();
       return;
@@ -40,8 +38,6 @@ const SearchBar = ({ onClose, setChats, chats }) => {
 
     try {
       const { data } = await axios.post(`/api/chats`, messageData);
-
-      console.log("got the chat !", data);
 
       setSelectedChat(data);
       setChats((prevChats) => [...prevChats, data]);
@@ -65,7 +61,7 @@ const SearchBar = ({ onClose, setChats, chats }) => {
           `/api/users?search=${searchTerm}`,
           config
         );
-        console.log(data);
+
         setSearchResults(data);
       } catch (error) {
         console.error("Error fetching search results:", error);

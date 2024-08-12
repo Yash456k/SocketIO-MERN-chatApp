@@ -16,7 +16,6 @@ function MessageInput({
     if (socket && selectedChat) {
       socket.emit("typing", selectedChat._id);
     }
-    console.log("typing...");
 
     if (typingTimeout) {
       clearTimeout(typingTimeout);

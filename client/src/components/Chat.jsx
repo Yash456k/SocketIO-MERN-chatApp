@@ -48,7 +48,6 @@ function Chat() {
           const { data } = await axios.get(`/api/chats/${user._id}`);
           setChatsLoading(false);
           setChats(data);
-          console.log("chats are", chats);
         } catch (error) {
           console.error(error);
         }
@@ -127,7 +126,6 @@ function Chat() {
           setInput("");
           setSendingMessage(true);
           const { data } = await axios.post("/api/messages", messageData);
-          console.log("data of message sent is", data);
           const receiverId = data.chat.users.find((id) => id !== user._id);
 
           socket.emit("new message", data, receiverId);

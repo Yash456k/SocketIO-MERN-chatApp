@@ -22,14 +22,11 @@ const useSocket = (setMessages, setChats, setTypingUsers) => {
 
     newSocket.on("message received", async (newMessageReceived) => {
       setMessages((prevMessages) => [...prevMessages, newMessageReceived]);
-      console.log("got a message yes");
-      console.log(newMessageReceived);
 
       setChats((prevChats) => {
         const chatIndex = prevChats.findIndex(
           (chat) => chat._id === newMessageReceived.chat._id
         );
-        console.log("chat index is", chatIndex);
 
         if (chatIndex !== -1) {
           const updatedChats = [...prevChats];
@@ -48,9 +45,6 @@ const useSocket = (setMessages, setChats, setTypingUsers) => {
         } else {
           const fetchChats = async () => {
             try {
-              console.log(
-                "Fetching all chats as the received message's chat is not in the local state"
-              );
               const { data } = await axios.get(`/api/chats/${user._id}`);
               setChats(data);
             } catch (error) {
@@ -65,12 +59,10 @@ const useSocket = (setMessages, setChats, setTypingUsers) => {
     });
 
     newSocket.on("typing", (room) => {
-      console.log("User is typing");
       setTypingUsers(true);
     });
 
     newSocket.on("stop typing", (room) => {
-      console.log("User stopped typing");
       setTypingUsers(false);
     });
 

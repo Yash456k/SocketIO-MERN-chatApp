@@ -66,14 +66,12 @@ export const createGroup = async (req, res) => {
   try {
     const { groupName, userIds, groupAdmin } = req.body;
 
-    // Log the request body to check the data
     console.log("Request body:", req.body);
 
     if (!groupName || !userIds || !groupAdmin) {
       return res.status(400).json({ error: "Missing required fields" });
     }
 
-    // Check if userIds is an array and not empty
     if (!Array.isArray(userIds) || userIds.length === 0) {
       return res
         .status(400)
