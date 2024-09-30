@@ -1,5 +1,7 @@
 export const getSender = (loggedUser, chat) => {
-  if (chat.isGroupChat) return chat.chatName;
+  if (chat.isGroupChat) return chat.chatName || "Group Chat";
+
   const users = chat.users;
-  return users[0]?._id === loggedUser?._id ? users[1].name : users[0].name;
+  const otherUser = users[0]?._id === loggedUser?._id ? users[1] : users[0];
+  return otherUser?.name || "Deleted User";
 };
