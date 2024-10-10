@@ -123,9 +123,7 @@ Follow these steps to get started with SocketIO-MERN-ChatApp:
 
 1. **Registration and Login**
    - Visit the [SocketIO-MERN-ChatApp](https://socket-io-mern-chat-app.vercel.app/).
-   - Click on the "Register" button to create a new account.
-   - Fill in your details and submit the registration form.
-   - Once registered, log in with your credentials.
+   - Either register by creating a new account or use google OAuth to login via google ( recommended )
 
 2. **Adding a Contact**
    - After logging in, you'll see your chat dashboard.
@@ -138,14 +136,13 @@ Follow these steps to get started with SocketIO-MERN-ChatApp:
 
 
 3. **Starting a Conversation**
-   - From your contacts list, find and click on "yash456k".
-   - This will open a new chat window with me.
+   - From your contacts list, find and click on "yash456k" ( with the email "yash456k@gmail.com" ).
+   - This will open the chat with me on the right side of the sidebar.
    - Type your message in the chat input field and press enter or click the send button.
    - You should see your message appear in the chat window in real-time.
 
 4. **Testing Real-Time Messaging**
-   - If I am online, you may receive a response.
-   - Try sending messages back and forth to test the real-time functionality.
+   - If I am online, you may receive a response. In the mean time you can test it out with google gemini.
 
 5. **Using the Gemini AI Interface**
    - Look for a special chat option or button labeled "Gemini AI" or similar.
@@ -156,6 +153,11 @@ Follow these steps to get started with SocketIO-MERN-ChatApp:
 
    - Type your questions or prompts as you would in a normal chat.
    - The Gemini AI will respond, demonstrating its capabilities.
+
+> [!WARNING]  
+> Due to the gemini model being powered by the free tier provided in the API, you may not get a response sometimes. This is because of the message quota being exhausted.
+
+   
 
 
 ## Demo Screenshots
