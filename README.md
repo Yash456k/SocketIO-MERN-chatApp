@@ -57,10 +57,10 @@ SocketIO-MERN-ChatApp is a modern, real-time chat application built using the ME
 
 ## Features
 
-* Real-time messaging using Socket.IO
+* Real-time messaging with other users using Socket.IO
 * User authentication with JWT
+* Google OAuth 2.0 for login
 * 
-* User presence indicators
 * Chat with Google Gemini API within the chat's interface
 * Firebase integration for authenticating users ( login / signup only )
 
