@@ -30,7 +30,6 @@
   - [Installation](#installation)
 - [Usage](#usage)
 - [Demo Screenshots](#demo-screenshots)
-- [Roadmap](#roadmap)
 - [Contributing](#contributing)
 - [License](#license)
 - [Contact](#contact)
@@ -43,7 +42,7 @@
 SocketIO-MERN-ChatApp is a modern, real-time chat application built using the MERN (MongoDB, Express, React, Node.js) stack and Socket.IO. It allows users to communicate instantly. This is a project I made to just understand how to make and deploy fullstack applications. If you find any bugs feel free to approach me on any social media platfomrs. I know the code is a bit messy 😅 but any feedback is welcome.
 
 
-
+Please check it out and message me by following the instructions mentioned here : [Usage](#usage)
 ### Built With
 
 * [MongoDB](https://www.mongodb.com/)
@@ -131,14 +130,11 @@ Follow these steps to get started with SocketIO-MERN-ChatApp:
 2. **Adding a Contact**
    - After logging in, you'll see your chat dashboard.
    - Look for the "Add / Find user" button.
-     
 <br/>
-
 
 ![image](https://github.com/user-attachments/assets/0a984f5a-6351-48b3-b09b-aa65e042c880)
    - Enter the username "yash456k" or the email "yash456k@gmail.com" in the search field.
    - Click on the search result to add me as a contact.
-
 
 
 3. **Starting a Conversation**
@@ -168,13 +164,9 @@ Follow these steps to get started with SocketIO-MERN-ChatApp:
 ![image](https://github.com/user-attachments/assets/84019a7f-59e6-4cef-89b2-15e4f2ed024c)
 ![image](https://github.com/user-attachments/assets/3b15937a-b18e-4eab-99b1-708f280c68d6)
 
-## Roadmap
-
-See the [open issues](https://github.com/Yash456k/SocketIO-MERN-chatApp/issues) for a list of proposed features (and known issues).
-
 ## Contributing
 
-Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
+Any contributions to this project are **greatly appreciated**.
 
 1. Fork the Project
 2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
