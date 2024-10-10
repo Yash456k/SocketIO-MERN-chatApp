@@ -58,8 +58,8 @@ Please check it out and message me by following the instructions mentioned here 
 
 * Real-time messaging with other users using Socket.IO
 * User authentication with JWT
-* Google OAuth 2.0 for login
-* 
+* Google OAuth 2.0 for signup / login
+* Clean interface for chatting, with realtime sidebar updates and message updates
 * Chat with Google Gemini API within the chat's interface
 * Firebase integration for authenticating users ( login / signup only )
 
