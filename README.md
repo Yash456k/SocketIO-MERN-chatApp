@@ -1,11 +1,11 @@
-# SocketIO-MERN-ChatApp
+# Yash's Chatapp
 
 <p align="center">
   <a href="https://github.com/Yash456k/SocketIO-MERN-chatApp">
     <img src="https://github.com/user-attachments/assets/08063af3-f8ec-4156-8755-4a965683fc56" alt="ChatApp Logo" width="660" height="360">
   </a>
 
-  <h3 align="center">SocketIO-MERN-ChatApp</h3>
+  <h3 align="center">Yash's Chatapp</h3>
 
   <p align="center">
     A real-time chat application built with the MERN stack and Socket.IO
@@ -119,10 +119,10 @@ To get a local copy up and running, follow these simple steps.
 ## Usage
 
 
-Follow these steps to get started with SocketIO-MERN-ChatApp:
+Follow these steps to get started with the project:
 
 1. **Registration and Login**
-   - Visit the [SocketIO-MERN-ChatApp](https://socket-io-mern-chat-app.vercel.app/).
+   - Visit the [website](https://socket-io-mern-chat-app.vercel.app/).
    - Either register by creating a new account or use google OAuth to login via google ( recommended )
 
 2. **Adding a Contact**
