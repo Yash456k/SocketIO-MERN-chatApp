@@ -188,12 +188,4 @@ Project Link: [https://github.com/Yash456k/SocketIO-MERN-chatApp](https://github
 
 ## Acknowledgements
 
-* [Socket.IO](https://socket.io/)
-* [Mongoose](https://mongoosejs.com/)
-* [JSON Web Tokens](https://jwt.io/)
-* [React Router](https://reactrouter.com/)
-* [Axios](https://github.com/axios/axios)
-* [Firebase](https://firebase.google.com/)
-* [Google Gemini API](https://ai.google.dev/)
-* [Vite](https://vitejs.dev/)
-* [Font Awesome](https://fontawesome.com)
+Me - I made this shit brick by brick
