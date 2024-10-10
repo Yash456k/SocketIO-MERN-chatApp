@@ -2,7 +2,7 @@
 
 <p align="center">
   <a href="https://github.com/Yash456k/SocketIO-MERN-chatApp">
-    <img src="https://github.com/user-attachments/assets/08063af3-f8ec-4156-8755-4a965683fc56" alt="ChatApp Logo" width="660" height="360">
+    <img src="https://github.com/user-attachments/assets/08063af3-f8ec-4156-8755-4a965683fc56" alt="ChatApp Logo" width="660" height="280">
   </a>
 
   <h3 align="center">Yash's Chatapp</h3>
