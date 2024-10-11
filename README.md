@@ -39,7 +39,7 @@
 
 
 
-SocketIO-MERN-ChatApp is a modern, real-time chat application built using the MERN (MongoDB, Express, React, Node.js) stack and Socket.IO. It allows users to communicate instantly. This is a project I made to just understand how to make and deploy fullstack applications. If you find any bugs feel free to approach me on any social media platfomrs. I know the code is a bit messy 😅 but any feedback is welcome.
+SocketIO-MERN-ChatApp is a modern, real-time chat application built using the MERN (MongoDB, Express, React, Node.js) stack and Socket.IO. It allows users to communicate instantly. This is a project I made to just understand how to make and deploy fullstack applications. If you find any bugs feel free to approach me on any social media platform. I know the code is a bit messy 😅 but any feedback is welcome.
 
 
 Please check it out and message me by following the instructions mentioned here : [Usage](#usage)
