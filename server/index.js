@@ -81,7 +81,7 @@ app.use("/api/chats", chatRouter);
 
 app.use("/api/messages", messageRouter);
 
-//needed to implement this because the free tier of render.com sleeps after inactivity , so this request just pings it to wake up
+//needed to implement this because the free tier of render.com sleeps after inactivity , so this request just pings it to wake up, however i have since moved onto vercel , so its technically not required now
 
 app.get("/api/checkIfActive", async (req, res) => {
   try {
