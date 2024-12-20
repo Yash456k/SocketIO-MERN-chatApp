@@ -7,12 +7,8 @@ import { GoogleOAuthProvider } from "@react-oauth/google";
 import { BrowserRouter } from "react-router-dom";
 import axios from "axios";
 
-axios.defaults.baseURL = "https://socket-io-mern-chat-app-kkx6.vercel.app";
+axios.defaults.baseURL = import.meta.env.VITE_BACKEND_URL;
 
-// http://localhost:4000
-//  https://socketio-mern-chatapp.onrender.com
-// https://socket-io-mern-chat-app-kkx6-3wxwssob8-yashs-projects-98b2c247.vercel.app
-// https://socket-io-mern-chat-app-kkx6.vercel.app
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <BrowserRouter>
