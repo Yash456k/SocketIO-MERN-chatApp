@@ -61,7 +61,35 @@ Please check it out and message me by following the instructions mentioned here 
 * Google OAuth 2.0 for signup / login
 * Clean interface for chatting, with realtime sidebar updates and message updates
 * Chat with Google Gemini API within the chat's interface
-* Firebase integration for authenticating users ( login / signup only )
+* Firebase integration for authenticating users ( login / signup )
+
+## Environment Variables
+
+### Required Variables
+These are necessary for the basic functionality of the application:
+- `MONGODB_URI`: Your MongoDB connection string
+- `JWT_SECRET`: Secret key for JWT token generation
+- `VITE_GOOGLE_CLIENT_ID`: Google OAuth client ID
+
+### Optional Features
+The following variables enable additional features:
+
+#### AI Chat Integration
+- `VITE_GEMINI_API`: Google Gemini API key
+  - When provided, enables AI chat functionality
+  - The application will work without this, but AI chat features will be disabled
+
+#### Firebase Authentication
+The following variables enable Firebase authentication:
+- `VITE_FIREBASE_API`
+- `VITE_FIREBASE_DOMAIN`
+- `VITE_FIREBASE_PROJECT_ID`
+- `VITE_FIREBASE_STORAGE_BUCKET`
+- `VITE_FIREBASE_MESSAGING_SENDER_ID`
+- `VITE_FIREBASE_APP_ID`
+- `VITE_FIREBASE_MEASUREMENT_ID`
+
+If Firebase variables are not provided, the application will still work, but without the email/ password sign in.
 
 ## Getting Started
 
