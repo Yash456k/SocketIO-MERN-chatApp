@@ -30,7 +30,6 @@ export const loginUser = async (req, res) => {
       displayName: user.name,
       token: generateToken(user._id),
     };
-    console.log("user login data", data);
 
     res.json(data);
   } catch (error) {

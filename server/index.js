@@ -1,13 +1,16 @@
 import express from "express";
 import { createServer } from "http";
 import { Server as SocketIoServer } from "socket.io";
-import.meta.env;
 import cors from "cors";
+import path from "path";
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 import userRouter from "./routes/userRouter.js";
 import chatRouter from "./routes/chatRouter.js";
 import messageRouter from "./routes/messageRouter.js";
-
 import connectToDatabase from "./databaseConfig/connectToDatabase.js";
 
 connectToDatabase();
@@ -48,14 +51,8 @@ io.on("connection", (socket) => {
 
   socket.on("new message", (newMessageReceived, recieverId) => {
     const chatId = newMessageReceived.chat._id;
-    console.log("yooooooooo goi reciever id", recieverId);
-
     if (!chatId) return console.log("Chat ID not defined");
-
-    socket
-      .to(chatId)
-      .to(recieverId)
-      .emit("message received", newMessageReceived);
+    socket.to(chatId).to(recieverId).emit("message received", newMessageReceived);
   });
 
   socket.on("leave chat", (chatId) => {
@@ -68,25 +65,31 @@ io.on("connection", (socket) => {
   });
 });
 
-const PORT = process.env.PORT || 4000;
-server.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
-
-//basic routing based on which request is hit
-
+// API Routes
 app.use("/api/users", userRouter);
-
 app.use("/api/chats", chatRouter);
-
 app.use("/api/messages", messageRouter);
-
-//needed to implement this because the free tier of render.com sleeps after inactivity , so this request just pings it to wake up, however i have since moved onto vercel , so its technically not required now
-
 app.get("/api/checkIfActive", async (req, res) => {
   try {
     res.status(201).json({ works: true });
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
+});
+
+// Serve static files and handle client-side routing
+if (process.env.NODE_ENV === 'production') {
+  // Serve static files
+  app.use(express.static(path.join(__dirname, "../client/dist")));
+  
+  // Handle client-side routing
+  app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "../client/dist/index.html"));
+  });
+}
+
+// Start server
+const PORT = process.env.PORT || 4000;
+server.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });

@@ -16,7 +16,6 @@ const protect = async (req, res, next) => {
 
       // Attach user to request object
       req.user = await User.findById(decoded.id);
-      console.log("Token verified successfully", decoded);
 
       next();
     } catch (error) {

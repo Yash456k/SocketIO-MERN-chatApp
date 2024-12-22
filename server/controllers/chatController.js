@@ -16,12 +16,7 @@ export const createChat = async (req, res) => {
     .populate("users")
     .populate("latestMessage");
 
-  console.log(isChat);
-  console.log("now zeroooooooooooooooooooooooooooooooooo index");
-  console.log(isChat[0]);
-
   if (isChat.length > 0) {
-    console.log("chat exists !");
     res.send(isChat[0]);
   } else
     try {
@@ -54,7 +49,6 @@ export const fetchChats = async (req, res) => {
       .populate("users")
       .sort({ updatedAt: -1 });
 
-    console.log("chats send!");
 
     res.status(200).json(chats);
   } catch (error) {
@@ -66,7 +60,6 @@ export const createGroup = async (req, res) => {
   try {
     const { groupName, userIds, groupAdmin } = req.body;
 
-    console.log("Request body:", req.body);
 
     if (!groupName || !userIds || !groupAdmin) {
       return res.status(400).json({ error: "Missing required fields" });

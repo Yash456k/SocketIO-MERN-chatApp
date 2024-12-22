@@ -31,7 +31,6 @@ export const createMessage = async (req, res) => {
       latestMessage: newMessage,
     });
 
-    console.log("new message created", newMessage);
 
     res.status(201).json(newMessage);
   } catch (error) {

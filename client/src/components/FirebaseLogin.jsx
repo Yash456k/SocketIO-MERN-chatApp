@@ -1,17 +1,34 @@
-import React, { useState, useEffect, useContext } from "react";
-import { auth } from "../config/firebase-config";
-import {
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-  signInWithCredential,
-  GoogleAuthProvider,
-  updateProfile,
-} from "firebase/auth";
-import { chatState } from "../context/Counter";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
 import { GoogleLogin } from "@react-oauth/google";
 import { jwtDecode } from "jwt-decode";
+import {chatState} from  "../context/Counter"
 import axios from "axios";
+
+// Firebase imports wrapped in a try-catch
+let auth;
+let firebaseAuth;
+try {
+  const { auth: importedAuth } = require("../config/firebase-config");
+  const {
+    createUserWithEmailAndPassword,
+    signInWithEmailAndPassword,
+    signInWithCredential,
+    GoogleAuthProvider,
+    updateProfile,
+  } = require("firebase/auth");
+  
+  auth = importedAuth;
+  firebaseAuth = {
+    createUserWithEmailAndPassword,
+    signInWithEmailAndPassword,
+    signInWithCredential,
+    GoogleAuthProvider,
+    updateProfile,
+  };
+} catch (error) {
+  console.warn("Firebase config not found, running in fallback mode");
+}
 
 const FirebaseLogin = () => {
   const { setUser } = chatState();
@@ -27,19 +44,20 @@ const FirebaseLogin = () => {
 
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("userInfo"));
-
     if (user) navigate("/chat");
   }, []);
 
   const googleLoginSuccess = async (credentialResponse) => {
     const decoded = jwtDecode(credentialResponse.credential);
 
-    const credential = GoogleAuthProvider.credential(
-      credentialResponse.credential
-    );
-
     try {
-      const userCredential = await signInWithCredential(auth, credential);
+      // Only attempt Firebase auth if available
+      if (auth && firebaseAuth) {
+        const credential = firebaseAuth.GoogleAuthProvider.credential(
+          credentialResponse.credential
+        );
+        await firebaseAuth.signInWithCredential(auth, credential);
+      }
 
       const response = await axios.post("/api/users/login", {
         userEmail: decoded.email,
@@ -74,7 +92,7 @@ const FirebaseLogin = () => {
       }
       navigate("/chat");
     } catch (error) {
-      console.error("Error signing in with Google:", error);
+      console.error("Error during Google sign in:", error);
     }
   };
 
@@ -95,13 +113,15 @@ const FirebaseLogin = () => {
         isAdmin: false,
       });
 
-      const userCredential = await createUserWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
-      const user = userCredential.user;
-      await updateProfile(user, { displayName: name });
+      // Only attempt Firebase auth if available
+      if (auth && firebaseAuth) {
+        const userCredential = await firebaseAuth.createUserWithEmailAndPassword(
+          auth,
+          email,
+          password
+        );
+        await firebaseAuth.updateProfile(userCredential.user, { displayName: name });
+      }
 
       const userData = {
         _id: response.data._id,
@@ -125,12 +145,14 @@ const FirebaseLogin = () => {
         userEmail: emailLogin,
       });
 
-      const userCredential = await signInWithEmailAndPassword(
-        auth,
-        emailLogin,
-        passwordLogin
-      );
-      const user = userCredential.user;
+      // Only attempt Firebase auth if available
+      if (auth && firebaseAuth) {
+        const userCredential = await firebaseAuth.signInWithEmailAndPassword(
+          auth,
+          emailLogin,
+          passwordLogin
+        );
+      }
 
       const userData = {
         _id: response.data._id,
@@ -148,6 +170,7 @@ const FirebaseLogin = () => {
     }
   };
 
+  // Rest of the component remains the same...
   const toggleLoginSignup = () => {
     setIsTransitioning(true);
     setTimeout(() => {
