@@ -73,7 +73,7 @@ function Chat() {
 
   const initializeAiChat = async () => {
     const genAI = new GoogleGenerativeAI(import.meta.env.VITE_GEMINI_API);
-    const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro" });
+    const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
     const chat = model.startChat({
       history: aiHistory,
       generationConfig: {

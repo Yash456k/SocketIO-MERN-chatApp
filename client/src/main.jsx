@@ -10,7 +10,7 @@ import { getGoogleClientId } from './utils/env';
 
 axios.defaults.baseURL = import.meta.env.VITE_BACKEND_URL;
 
-const clientId = getGoogleClientId();
+const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <BrowserRouter>

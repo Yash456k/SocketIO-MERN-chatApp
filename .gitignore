@@ -1,1 +1,4 @@
 .env
+selfNotes.md
+server/.env
+client/.env

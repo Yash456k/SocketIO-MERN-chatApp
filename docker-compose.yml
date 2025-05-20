@@ -4,7 +4,7 @@ services:
       context: .
       args:
         - VITE_GOOGLE_CLIENT_ID=${VITE_GOOGLE_CLIENT_ID}
-        - VITE_BACKEND_URL=http://localhost:4000
+        - VITE_BACKEND_URL=${VITE_BACKEND_URL}
         # Optional Features
         - VITE_GEMINI_API=${VITE_GEMINI_API}
         - VITE_FIREBASE_API=${VITE_FIREBASE_API:-}
