@@ -1,5 +1,6 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
+import path from 'path';
 
 export default defineConfig({
   plugins: [react()],
@@ -8,5 +9,10 @@ export default defineConfig({
     // 'import.meta.env.VITE_BACKEND_URL': JSON.stringify(process.env.VITE_BACKEND_URL),
     // 'import.meta.env.VITE_GEMINI_API': JSON.stringify(process.env.VITE_GEMINI_API)
 
+  },
+   resolve: {
+    alias: {
+      "@": path.resolve(__dirname, "./src"),
+    },
   },
 });

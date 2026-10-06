@@ -11,8 +11,11 @@
   },
   "dependencies": {
     "@google/generative-ai": "^0.16.0",
+    "@radix-ui/react-slot": "^1.2.3",
     "@react-oauth/google": "^0.12.1",
     "axios": "^1.7.2",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
     "dotenv": "^16.4.5",
     "firebase": "^10.12.2",
     "jwt-decode": "^4.0.0",
@@ -23,7 +26,9 @@
     "react-router": "^6.23.1",
     "react-router-dom": "^6.23.1",
     "react-transition-group": "^4.4.5",
-    "socket.io-client": "^4.7.5"
+    "socket.io-client": "^4.7.5",
+    "tailwind-merge": "^3.3.1",
+    "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
     "@types/react": "^18.2.66",

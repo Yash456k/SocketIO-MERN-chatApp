@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { MessageSquare, ArrowRight, X, Loader } from "lucide-react";
 import { useNavigate } from "react-router";
 import axios from "axios";
+import { Button } from "@/components/ui/button";
 
 const CustomAlert = ({ message, onClose }) => (
   <div className="fixed top-4 left-1/2 transform -translate-x-1/2 bg-red-500 text-white p-4 rounded-md shadow-lg flex items-center">
@@ -89,7 +90,7 @@ const ChatAppFrontPage = () => {
         }`}
       >
         <MessageSquare
-          size={80}
+         size={80}
           className="mx-auto mb-8 animate-bounce text-emerald-400"
         />
         {loading ? (
@@ -108,15 +109,14 @@ const ChatAppFrontPage = () => {
             <p className="text-xl mb-8 text-center text-emerald-200">
               Connect with friends and family instantly. Start chatting now!
             </p>
-            <button
-              onClick={handleRedirect}
-              className={`bg-emerald-500 text-black px-8 py-3 rounded-full font-semibold text-lg max-w-xs transition-all duration-300 transform hover:scale-105 hover:bg-black hover:text-emerald-500 border border-emerald-500 ${
+              <Button
+              className={`${
                 !isServerActive && "opacity-50 cursor-not-allowed"
               }`}
               disabled={!isServerActive}
-            >
-              Get Started
-            </button>
+              onClick={handleRedirect}>
+                Get started
+              </Button>
           </>
         )}
       </div>
