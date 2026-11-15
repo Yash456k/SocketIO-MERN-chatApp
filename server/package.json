@@ -4,6 +4,9 @@
   "description": "Your project description here",
   "main": "index.js",
   "type": "module",
+  "engines": {
+    "node": "24.x"
+  },
   "scripts": {
     "dev": "nodemon index.js",
     "start": "node index.js"
